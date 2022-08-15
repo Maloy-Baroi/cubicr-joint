@@ -85,7 +85,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'cubicr_database',
-        'USER': 'cubicr_amin',
+        'USER': 'cubicr_user',
         'PASSWORD': '1Haveadream',
         'HOST': 'localhost',
         'PORT': '5432',
