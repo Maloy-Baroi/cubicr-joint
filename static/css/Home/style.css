@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #eff2f6;
+}
+
+.search-submit-btn {
+    margin-right: -45px;
+    z-index: 999;
+}
+
+.search-submit-btn:hover {
+    border: none;
+}
+
+.navbar {
+    padding: 0;
+}
+
+a.nav-link {
+    color: #676a79 !important;
+    padding: 0 1rem !important;
+    font-size: 0.9375rem !important;
+    font-weight: 600 !important;
+    text-transform: capitalize !important;
+    line-height: 56px !important;
+}
+
+a.nav-link:hover {
+    color: #0b53b1 !important;
+}
+
+.icon-md {
+    height: 2.5rem;
+    width: 2.5rem;
+    padding: 0 !important;
+    font-size: 0.9em !important;
+    display: -ms-inline-flexbox !important;
+    display: inline-flex !important;
+    -webkit-box-align: center !important;
+    -ms-flex-align: center !important;
+    align-items: center !important;
+    -webkit-box-pack: center !important;
+    -ms-flex-pack: center !important;
+    justify-content: center !important;
+}
+
+.avatar-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+.navbar-toggler {
+    background-color: #ffffff !important;
+}
+
+@media screen and (max-width: 991px) {
+    #nav-ul-2 {
+        display: none;
+    }
+}
+
+.dropdown-menu {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: .5s ease all;
+}
+
+/*.dropdown-menu.show {*/
+/*    display: block;*/
+/*    visibility: visible;*/
+/*    opacity: 1;*/
+/*    transform: translateY(0px);*/
+/*    transition: .5s ease all;*/
+/*}*/
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0px);
+    transition: .5s ease all;
+}
+
+.dropdown-toggle {
+    color: #676a79 !important;
+    padding: 0 1rem !important;
+    font-size: 0.9375rem !important;
+    font-weight: 600 !important;
+    text-transform: capitalize !important;
+    line-height: 56px !important;
+}
+
+.dropdown-toggle:hover {
+    color: #0b53b1 !important;
+}
+
+.dropdown-item {
+    display: block !important;
+    width: 100% !important;
+    padding: 0.4rem 1.2rem !important;
+    clear: both !important;
+    font-weight: 500 !important;
+    color: #676a79 !important;
+    text-align: inherit !important;
+    white-space: nowrap !important;
+    background-color: transparent !important;
+    border: 0 !important;
+}
+
+.dropdown-item:hover {
+    color: #0b53b1 !important;
+}
+

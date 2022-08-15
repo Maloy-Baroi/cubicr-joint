@@ -1,0 +1,275 @@
+{% extends 'Navbar.html' %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% block main %}
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/Chat/style.css' %}">
+    <style>
+        .allChatGroup {
+            overflow-y: scroll;
+        }
+
+        .messages-box {
+            overflow-y: auto !important;
+        }
+
+        @media screen and (max-width: 320px) {
+            #id-displayChat {
+                height: 200px;
+                overflow-y: scroll;
+            }
+        }
+
+        @media screen and (max-width: 991px) {
+            #id-displayChat {
+            height: 250px;
+            overflow-y: scroll;
+        }
+        }
+    </style>
+
+    <!-- **************** MAIN CONTENT START **************** -->
+    <main>
+        <!-- Container START -->
+        <div class="container mt-5">
+            <div class="row gx-0 mt-5">
+                <!-- Sidebar START -->
+                <div class="col-lg-4 col-xxl-3 mt-5" id="chatTabs" role="tablist">
+
+                    <!-- Divider -->
+                    <div class="d-flex align-items-center mb-4 d-lg-none">
+                        <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                            <i class="btn btn-primary fw-bold fa fa-solid fa-sliders"></i>
+                            <span class="h6 mb-0 fw-bold d-lg-none ms-2">Chats</span>
+                        </button>
+                    </div>
+                    <!-- Advanced filter responsive toggler END -->
+                    <div class="card card-body border-end-0 border-bottom-0 rounded-bottom-0">
+                        <div class=" d-flex justify-content-between align-items-center">
+                            <h1 class="h5 mb-0">Active chats <span
+                                    class="badge bg-success bg-opacity-10 text-success">{{ groupsCount }}</span></h1>
+                            <!-- Chat new create message item START -->
+                            <div class="dropend position-relative">
+                                <div class="nav">
+                                    <a class="icon-md rounded-circle btn btn-sm btn-primary-soft nav-link toast-btn"
+                                       data-target="chatToast" href="#"> <i class="bi bi-pencil-square"></i> </a>
+                                </div>
+                            </div>
+                            <!-- Chat new create message item END -->
+                        </div>
+                    </div>
+
+                    <nav class="navbar navbar-light navbar-expand-lg mx-0">
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
+                            <!-- Offcanvas header -->
+                            <div class="offcanvas-header">
+                                <button type="button" class="btn-close text-reset ms-auto"
+                                        data-bs-dismiss="offcanvas"></button>
+                            </div>
+
+                            <!-- Offcanvas body -->
+                            <div class="offcanvas-body p-0">
+                                <div class="card card-chat-list rounded-end-lg-0 card-body border-end-lg-0 rounded-top-0">
+
+                                    <!-- Search chat START -->
+                                    <form class="position-relative">
+                                        <input class="form-control py-2" type="search" placeholder="Search for chats"
+                                               aria-label="Search">
+                                        <button class="btn bg-transparent text-secondary px-2 py-0 position-absolute top-50 end-0 translate-middle-y"
+                                                type="submit">
+                                            <i class="bi bi-search fs-5"></i>
+                                        </button>
+                                    </form>
+                                    <!-- Search chat END -->
+                                    <!-- Chat list tab START -->
+                                    <div class="mt-4 h-100 allChatGroup">
+                                        <div class="chat-tab-list custom-scrollbar">
+                                            <ul class="nav flex-column nav-pills nav-pills-soft">
+                                                {% for group in groups %}
+                                                    <li data-bs-dismiss="offcanvas">
+                                                        <!-- Chat user tab item -->
+                                                        <a href="#chat-{{ group.id }}"
+                                                           class="nav-link active text-start"
+                                                           id="chat-1-tab"
+                                                           data-bs-toggle="pill" role="tab">
+                                                            <div class="d-flex">
+                                                                <div class="flex-shrink-0 avatar avatar-story me-2 status-online">
+                                                                    <img class="avatar-img rounded-circle"
+                                                                         src="{% static 'images/chat.png' %}" alt="">
+                                                                </div>
+                                                                <div class="flex-grow-1 d-block">
+                                                                    <script>
+                                                                        let room = "";
+
+                                                                        const roomNameSet = (groupName) => {
+                                                                            room = groupName;
+                                                                            document.getElementById('id-groupName').innerText = room;
+                                                                            document.getElementById('id-roomID').value = room;
+                                                                        }
+                                                                    </script>
+                                                                    <h6 class="mb-0 mt-1"
+                                                                        onclick="roomNameSet(`{{ group.name }}`)">
+                                                                        {{ group.name }}
+                                                                    </h6>
+                                                                    <div class="small text-secondary">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                                <!-- Chat user tab item -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- Chat list tab END -->
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <!-- Sidebar START -->
+
+                <!-- Chat conversation START -->
+                <div class="col-lg-8 col-xxl-9 mt-5" id="id-ChatDiv">
+                    <div class="card card-chat rounded-start-lg-0 border-start-lg-0">
+                        <div class="card-body" style="height: 80%">
+                            <div class="tab-content py-0 mb-0 h-100" id="chatTabsContent">
+                                <!-- Conversation item START -->
+                                <div class="fade tab-pane show active h-100 messages-box" id="chat-1" role="tabpanel"
+                                     aria-labelledby="chat-1-tab">
+                                    <!-- Top avatar and status START -->
+                                    <div class="d-sm-flex justify-content-between align-items-center">
+                                        <div class="d-flex mb-2 mb-sm-0">
+                                            <div class="flex-shrink-0 avatar me-2">
+                                                <img class="avatar-img rounded-circle"
+                                                     src="{% static 'images/chat.png' %}"
+                                                     alt="">
+                                            </div>
+                                            <div class="d-block flex-grow-1">
+                                                <h6 class="mb-0 mt-1" id="id-groupName"></h6>
+                                                <div class="small text-secondary"><i
+                                                        class="fa fa-solid fa-circle text-success me-1"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Top avatar and status END -->
+                                    <hr>
+                                    <!-- Chat conversation START -->
+                                    <div class="chat-conversation-content custom-scrollbar" id="id-displayChat">
+
+                                    </div>
+                                    <!-- Chat conversation END -->
+                                </div>
+                                <!-- Conversation item END -->
+                                <script>
+                                    let you = `{{ request.user.id }}`;
+                                    $(document).ready(function () {
+                                        setInterval(function () {
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: "/chat/getMessages/" + room + "/",
+                                                success: function (response) {
+                                                    $("#id-displayChat").empty();
+                                                    for (let i in response.messagesList) {
+                                                        let res = response.messagesList[i];
+                                                        if (parseInt(you) !== parseInt(res.userID)) {
+                                                            newDiv_1 = `<div class="d-flex mb-1">
+                                                            <div class="flex-shrink-0 avatar avatar-xs me-2">
+                                                                <img class="avatar-img rounded-circle"
+                                                                     src="` + res.profile_picture + `" alt="">
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <div class="w-100">
+                                                                    <div class="d-flex flex-column align-items-start">
+                                                                        <div
+                                                                            class="bg-light text-secondary p-2 px-3 rounded-2">` +
+                                                                res.value +
+                                                                `</div>
+                                                                        <div class="small my-2" style="font-size: 8px;">` + res.date + `</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>`;
+                                                            $('#id-displayChat').append(newDiv_1);
+                                                        } else {
+                                                            newDiv_2 = `<div class="d-flex justify-content-end text-end mb-1" style="margin-right: 5px;">
+                                                            <div class="w-100">
+                                                                <div class="d-flex flex-column align-items-end">
+                                                                    <div
+                                                                        class="bg-primary text-white p-2 px-3 rounded-2">`
+                                                                + res.value +
+                                                                `</div>
+                                                                    <!-- Images -->
+                                                                    <div class="d-flex my-2">
+                                                                        <div class="small text-secondary" style="font-size: 8px;">` + res.date + `</div>
+                                                                        <div class="small ms-2"><i
+                                                                            class="fa fa-solid fa-check"></i></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>`;
+                                                            $('#id-displayChat').append(newDiv_2);
+                                                        }
+                                                    }
+                                                },
+                                                error: function (err) {
+                                                    $('#id-displayChat').empty();
+                                                    console.log("-------------Error------------");
+                                                }
+                                            });
+                                        }, 2000);
+                                    })
+                                </script>
+                            </div>
+                        </div>
+                        <form method="post" id="id-message-send-form">
+                            {% csrf_token %}
+                            <div class="card-footer">
+                                <div class="d-sm-flex align-items-end">
+                                    <textarea class="form-control mb-sm-0 mb-3 w-80" data-autoresize
+                                              placeholder="Type a message" id="messages"
+                                              rows="1"></textarea>
+                                    <input type="hidden" name="room" id="id-roomID" value="">
+                                    <button class="btn btn-sm btn-primary ms-2" type="submit">
+                                        <i class="fa fa-solid fa-paper-plane fs-6"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <script type="text/javascript">
+                            $(document).on('submit', '#id-message-send-form', function (e) {
+                                e.preventDefault();
+                                $.ajax({
+                                    type: 'Post',
+                                    url: '/chat/send-message/',
+                                    data: {
+                                        user_id: {{ request.user.id }},
+                                        room_name: room,
+                                        message: $('#messages').val(),
+                                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                                    },
+                                    success: function (data) {
+                                        document.getElementById('messages').value = "";
+                                    }
+                                })
+                            });
+
+                        </script>
+                    </div>
+                </div>
+                <!-- Chat conversation END -->
+            </div> <!-- Row END -->
+            <!-- =======================
+            Chat END -->
+
+        </div>
+        <!-- Container END -->
+
+    </main>
+    <!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}
+

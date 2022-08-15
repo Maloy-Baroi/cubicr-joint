@@ -1,0 +1,126 @@
+{% extends 'Navbar.html' %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% block main %}
+    <style>
+        table {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        table caption {
+            font-size: 1.5em;
+            margin: .5em 0 .75em;
+        }
+
+        table tr {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: .35em;
+        }
+
+        table th,
+        table td {
+            padding: .625em;
+            text-align: center;
+        }
+
+        table th {
+            font-size: .85em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        @media screen and (max-width: 600px) {
+            table {
+                border: 0;
+            }
+
+            table caption {
+                font-size: 1.3em;
+            }
+
+            table thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+
+            table tr {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+
+            table td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+            }
+
+            table td::before {
+                /*
+                * aria-label has no advantage, it won't be read inside a table
+                content: attr(aria-label);
+                */
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            table td:last-child {
+                border-bottom: 0;
+            }
+        }
+
+        /* general styling */
+        body {
+            font-family: "Open Sans", sans-serif;
+            line-height: 1.25;
+        }
+    </style>
+    <div class="container" style="margin-top: 120px;">
+        <table>
+            <caption>Statement Summary</caption>
+            <thead>
+            <tr>
+                <th scope="col">TITLE</th>
+                <th scope="col">TOTAL PARTICIPANTS</th>
+                <th scope="col">PROJECT DURATION</th>
+                <th scope="col">SKILLS</th>
+                <th scope="col">APPLICATION DATELINE</th>
+                <th scope="col">ALL APPLIES</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for pnr in my_pnr %}
+                <tr>
+                    <td data-label="TITLE">
+                        <a href="{% url 'App_post:apply-for-participation' pk=pnr.id %}">
+                            {{ pnr.title }}
+                        </a>
+                    </td>
+                    <td data-label="TOTAL PARTICIPANTS">{{ pnr.total_participants }}</td>
+                    <td data-label="PROJECT DURATION">{{ pnr.project_duration }} days</td>
+                    <td data-label="SKILLS">{{ pnr.required_skills }}</td>
+                    <td data-label="APPLICATION DATELINE">{{ pnr.application_deadline.date }}</td>
+                    <td data-label="ALL APPLIES">
+                        {{ pnr.task.count }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        cubicR | {% block title %}
+
+    {% endblock %}
+    </title>
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Manual Style -->
+    <link rel="stylesheet" href="{% static 'css/Home/style.css' %}">
+</head>
+<body>
+
+<header class="navbar-light fixed-top header-static bg-mode">
+    <nav class="navbar navbar-expand-lg bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}"
+               style="font-family: 'Monoton', cursive; color: #0a0c0e; font-weight: bold">
+                CUBICr
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <form class="d-flex" role="search">
+                    <button class="btn search-submit-btn" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <input class="form-control ps-5 bg-light" type="search" placeholder="Search..." aria-label="Search">
+                </form>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0" id="nav-ul-1">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Jobs
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'App_post:display-job-post' %}">Job Posts</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_post:job-post' %}">Create New</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Resources
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'App_content:syllabus' %}">Syllabus</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_content:pod-showcase' %}">Podcast</a></li>
+                            <li><a class="dropdown-item" href="#">Research Paper</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Account
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'App_post:my-project-n-partner-view' %}">
+                                    My Projects/Researches
+                                </a>
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'App_post:partner-request' %}">Join
+                                Projects/Researches</a></li>
+                            <li><a class="dropdown-item"
+                                   href="{% url 'App_auth:general-profile-settings' %}">Settings</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_auth:logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'App_content:my-network-view' %}">My Network</a>
+                    </li>
+                </ul>
+                <ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled" id="nav-ul-2">
+                    <li class="nav-item ms-2">
+                        <a class="nav-link icon-md btn btn-light p-0" href="{% url 'App_chat:my-chat-groups' %}">
+                            <i class="bi bi-chat-left-text-fill fs-6"> </i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown ms-2">
+                        <a class="nav-link icon-md btn btn-light p-0" href="#" id="notifDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                            <span class="badge-notif animation-blink"></span>
+                            <i class="bi bi-bell-fill fs-6"> </i>
+                        </a>
+                        <ul class="dropdown-menu" style="margin-left: -100px; width: 300px;">
+                            {% for friendRequest in friend_requestsNotification %}
+                                {% if friendRequest.from_user in total_friends.0.connections.all %}
+                                    <li>
+                                        <p class="text-center">No Notifications</p>
+                                    </li>
+                                {% else %}
+                                    <li style="padding: 10px">
+                                        <a href="">
+                                            <img src="{{ friendRequest.from_user.user_main_profile.profile_picture.url }}"
+                                                 alt="{{ friendRequest.from_user.user_main_profile.fullName }}"
+                                                 height="40" width="40">
+                                            {{ friendRequest.from_user.user_main_profile.fullName }}
+                                        </a>
+                                        <a href="{% url 'App_content:accept-connection-request' request_id=friendRequest.id %}">
+                                            <i class="btn btn-success btn-sm bi bi-plus"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <!-- Notification dropdown END -->
+                    <li class="nav-item ms-2">
+                        <a class="btn icon-md p-0" href="{% url 'App_auth:profile-view' %}" id="profileDropdown">
+                            <img class="avatar-img rounded-2"
+                                 src="{{ request.user.user_main_profile.profile_picture.url }}" alt="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+{% block main %}
+
+{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+</body>
+</html>

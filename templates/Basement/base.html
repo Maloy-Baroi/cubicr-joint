@@ -1,0 +1,207 @@
+{% load static %}
+{% load crispy_forms_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+          href="{% static 'fonts.googleapis.com/css2ab8c.css' %}">
+
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'App_auth/assets/vendor/font-awesome/css/all.min.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'App_auth/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'App_auth/assets/vendor/OverlayScrollbars-master/css/OverlayScrollbars.min.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'App_auth/assets/vendor/tiny-slider/dist/tiny-slider.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'App_auth/assets/vendor/choices.js/public/assets/styles/choices.min.css' %}"/>
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'App_auth/assets/vendor/glightbox-master/dist/css/glightbox.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'App_auth/assets/vendor/dropzone/dist/dropzone.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'App_auth/assets/vendor/flatpickr/dist/flatpickr.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'App_auth/assets/vendor/plyr/plyr.css' %}"/>
+    <title>
+        cubicR | {% block title %}
+    {% endblock %}
+    </title>
+
+    <!-- Theme CSS -->
+    {% include 'homeStyles/HomeStyle.html' %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="{% static 'gtag/js828e' %}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-GMKQ4P9YMZ');
+    </script>
+</head>
+<body>
+<!-- Header START -->
+<header class="navbar-light fixed-top header-static bg-mode">
+
+    <!-- Logo Nav START -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Logo START -->
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <span style="font-family: 'Monoton', cursive; color: #0a0c0e; font-weight: bold">cubicR</span>
+            </a>
+            <!-- Logo END -->
+
+            <!-- Responsive navbar toggler -->
+            {#            <button class="navbar-toggler ms-auto icon-md btn btn-light p-0 collapsed" type="button"#}
+            {#                    data-bs-toggle="collapse"#}
+            {#                    data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"#}
+            {#                    aria-label="Toggle navigation" id="navbarCollapseButton">#}
+            <button id="navbarCollapseButton" style="display: none">
+                <span class="navbar-toggler-animation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+
+            <!-- Main navbar START -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+
+                <!-- Nav Search START -->
+                <div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
+                    <div class="nav-item w-100">
+                        <form class="rounded position-relative">
+                            <input class="form-control ps-5 bg-light" type="search" placeholder="Search..."
+                                   aria-label="Search">
+                            <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y"
+                                    type="submit"><i class="bi bi-search fs-5"> </i></button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Nav Search END -->
+
+                <ul class="navbar-nav navbar-nav-scroll ms-auto">
+                    <!-- Nav item 1 Demos -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="jobMenu" data-bs-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Jobs</a>
+                        <ul class="dropdown-menu" aria-labelledby="jobMenu">
+                            <li><a class="dropdown-item" href="{% url 'App_post:display-job-post' %}">Posts</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_post:job-post' %}">Create New</a></li>
+                        </ul>
+                    </li>
+                    <!-- Nav item 2 Pages -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Resources</a>
+                        <ul class="dropdown-menu" aria-labelledby="pagesMenu">
+                            <li><a class="dropdown-item" href="{% url 'App_content:syllabus' %}">Syllabus</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_content:pod-showcase' %}">Podcast</a></li>
+                            <li><a class="dropdown-item" href="#">Research Paper</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Nav item 3 Post -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="postMenu" data-bs-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Account </a>
+                        <ul class="dropdown-menu" aria-labelledby="postMenu">
+                            <li><a class="dropdown-item" href="#">Create a group</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_post:my-project-n-partner-view' %}">My
+                                Projects/Researches</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_post:partner-request' %}">Join
+                                Research/Project</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                   href="{% url 'App_auth:general-profile-settings' %}">Settings</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_auth:logout' %}">Logout</a></li>
+                            <li>
+                                <div class="modeswitch-wrap" id="darkModeSwitch">
+                                    <div class="modeswitch-item">
+                                        <div class="modeswitch-icon"></div>
+                                    </div>
+                                    <span>Dark mode</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Nav item 4 Mega menu -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">My network</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Main navbar END -->
+
+            <!-- Nav right START -->
+            <ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
+                <li class="nav-item ms-2">
+                    <a class="nav-link icon-md btn btn-light p-0" href="{% url 'App_chat:my-chat-groups' %}">
+                        <i class="bi bi-chat-left-text-fill fs-6"> </i>
+                    </a>
+                </li>
+                <li class="nav-item dropdown ms-2">
+                    <a class="nav-link icon-md btn btn-light p-0" href="#" id="notifDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                        <span class="badge-notif animation-blink"></span>
+                        <i class="bi bi-bell-fill fs-6"> </i>
+                    </a>
+                </li>
+                <!-- Notification dropdown END -->
+                <li class="nav-item ms-2 dropdown">
+                    <a class="nav-link btn icon-md p-0" href="{% url 'App_auth:profile-view' %}" id="profileDropdown">
+                        <img class="avatar-img rounded-2" src="{{ request.user.user_main_profile.profile_picture.url }}"
+                             alt="">
+                    </a>
+                </li>
+            </ul>
+            <!-- Nav right END -->
+        </div>
+    </nav>
+    <!-- Logo Nav END -->
+</header>
+<!-- Header END -->
+<!-- **************** MAIN CONTENT START **************** -->
+
+{% block main %}
+
+{% endblock %}
+
+<!-- **************** MAIN CONTENT END **************** -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+<!-- =======================
+JS libraries, plugins and custom scripts -->
+
+<!-- Bootstrap JS -->
+<script src="{% static 'App_auth/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Vendors -->
+<script src="{% static 'App_auth/assets/vendor/tiny-slider/dist/tiny-slider.js' %}"></script>
+<script src="{% static 'App_auth/assets/vendor/OverlayScrollbars-master/js/OverlayScrollbars.min.js' %}"></script>
+<script src="{% static 'App_auth/assets/vendor/choices.js/public/assets/scripts/choices.min.js' %}"></script>
+<script src="{% static 'App_auth/assets/vendor/glightbox-master/dist/js/glightbox.min.js' %}"></script>
+<script src="{% static 'App_auth/assets/vendor/flatpickr/dist/flatpickr.min.js' %}"></script>
+<script src="{% static 'App_auth/assets/vendor/plyr/plyr.js' %}"></script>
+<script src="{% static 'App_auth/assets/vendor/dropzone/dist/min/dropzone.min.js' %}"></script>
+
+<!-- Template Functions -->
+<script src="{% static 'App_auth/assets/js/functions.js' %}"></script>
+</body>
+</html>

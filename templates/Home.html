@@ -1,0 +1,874 @@
+{% extends 'Navbar.html' %}
+{% load static %}
+{% block title %}
+    Home
+{% endblock %}
+{% block main %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/Home/mainPage.css' %}">
+    <style>
+        #id-load-more-post {
+            display: none;
+        }
+
+        .post-showcase-in-smallscreen {
+            display: none;
+        }
+
+        @media screen and (max-width: 991px) {
+            .post-showcase-in-smallscreen {
+                display: block;
+            }
+
+            .post-showcase-in-bigscreen {
+                display: none;
+            }
+
+            #id-load-more-post {
+                display: none;
+            }
+
+            .dropdown-toggle::after {
+                display: none;
+            }
+
+            .created-datetime, .post-city {
+                font: 10px Calibri;
+            }
+
+            .nav-item:before {
+                display: none;
+            }
+
+            .btn-secondary-soft-hover {
+                display: none;
+            }
+
+        }
+    </style>
+    <main>
+        <!-- Container START -->
+        <div class="container mt-5">
+            <div class="row g-4 mt-5">
+                <!-- Sidenav START -->
+                <div class="col-lg-3">
+                    <!-- Advanced filter responsive toggler START -->
+                    <div class="d-flex align-items-center d-lg-none">
+                        <button class="btn btn-primary border-0 bg-transparent" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
+                            <i class="btn btn-primary bi bi-sliders"></i>
+                            <span class="h6 mb-0 fw-bold d-lg-none ms-2">My profile</span>
+                        </button> &nbsp;
+                        <div class="ms-auto">
+                            <a class="btn btn-light p-3 bg-white" href="/chat/my-chat-groups/">
+                                <i class="bi bi-chat-left-text-fill fs-6"> </i>
+                            </a>
+                            <a class="btn btn-light p-3 bg-white" href="#" id="notifDropdown" role="button">
+                                <span class="badge-notif animation-blink"></span>
+                                <i class="bi bi-bell-fill fs-6"> </i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Advanced filter responsive toggler END -->
+                    <!-- Navbar START-->
+                    <nav class="navbar navbar-expand-lg mx-0">
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
+                            <!-- Offcanvas header -->
+                            <div class="offcanvas-header">
+                                <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas"
+                                        aria-label="Close"></button>
+                            </div>
+                            <!-- Offcanvas body -->
+                            <div class="offcanvas-body d-block px-2 px-lg-0">
+                                <!-- Card START -->
+                                <div class="card overflow-hidden">
+                                    <!-- Cover image -->
+                                    <div class="h-50px"
+                                         style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                                    <!-- Card body START -->
+                                    <div class="card-body pt-0">
+                                        <div class="text-center">
+                                            <!-- Avatar -->
+                                            <div class="avatar avatar-lg mt-n5 mb-3">
+                                                <a href="#">
+                                                    <img class="avatar-img rounded border border-white border-3"
+                                                         src="{{ request.user.user_main_profile.profile_picture.url }}"
+                                                         alt="">
+                                                </a>
+                                            </div>
+                                            <!-- Info -->
+                                            <h5 class="mb-0"><a
+                                                    href="#"> {{ request.user.user_main_profile.fullName }} </a>
+                                            </h5>
+                                            <small>{{ request.user.user_main_profile.house_no }}, {{ request.user.user_main_profile.area }}, {{ request.user.user_main_profile.city }}</small>
+
+                                            <!-- User stat START -->
+                                            <div class="hstack gap-2 gap-xl-3 justify-content-center">
+                                                <!-- User stat item -->
+                                                <div>
+                                                    <h6 class="mb-0">{{ userTotalPost }}</h6>
+                                                    <small>Post</small>
+                                                </div>
+                                                <!-- Divider -->
+                                                <div class="vr"></div>
+                                                <!-- User stat item -->
+                                                <div>
+                                                    <h6 class="mb-0">{{ userTotalPodcast }}</h6>
+                                                    <small>Podcast</small>
+                                                </div>
+                                                <!-- Divider -->
+                                                <div class="vr"></div>
+                                                <!-- User stat item -->
+                                                <div>
+                                                    <h6 class="mb-0">
+                                                        {{ total_friends.count }}
+                                                    </h6>
+                                                    <small>Connections</small>
+                                                </div>
+                                            </div>
+                                            <!-- User stat END -->
+                                        </div>
+
+                                        <!-- Divider -->
+                                        <hr>
+                                    </div>
+                                    <!-- Card body END -->
+                                    <!-- Card footer -->
+                                    <div class="card-footer text-center py-2">
+                                        <a class="btn btn-link btn-sm" href="{% url 'App_auth:profile-view' %}">
+                                            View Profile
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Card END -->
+
+                                <!-- Helper link START -->
+                                <ul class="nav small mt-4 justify-content-center lh-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">About</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/auth/general-profile-settings/">Settings</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" target="_blank" href="#">Support </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" target="_blank" href="#">Docs </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Help</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Privacy &amp; terms</a>
+                                    </li>
+                                </ul>
+                                <!-- Helper link END -->
+                                <!-- Copyright -->
+                                <p class="small text-center mt-1">©2022 <a class="text-body" target="_blank" href="#">
+                                    Team Explorer </a></p>
+                            </div>
+                        </div>
+                    </nav>
+                    <!-- Navbar END-->
+
+                </div>
+                <!-- Sidenav END -->
+
+                <!-- Main content START -->
+                <div class="col-md-8 col-lg-6 vstack gap-4">
+                    <!-- Share feed START -->
+                    <div class="card card-body">
+                        <div class="d-flex mb-3">
+                            <!-- Avatar -->
+                            <div class="avatar avatar-xs me-2">
+                                <a href="#">
+                                    <img class="avatar-img rounded-circle" src="/static/images/writing.png" alt="">
+                                </a>
+                            </div>
+                            <!-- Post input -->
+                            <form class="w-100">
+                                <textarea class="form-control pe-4 border-0" rows="2" data-autoresize=""
+                                          onfocus="storyTellingModalOpener()" placeholder="Share your story"></textarea>
+                            </form>
+                        </div>
+                        <!-- Share feed toolbar START -->
+                        <ul class="nav nav-pills nav-stack small fw-normal">
+                            <li class="nav-item">
+                                <a class="nav-link bg-light py-1 px-2 mb-0" href="#" data-bs-toggle="modal"
+                                   data-bs-target="#feedActionPhoto">
+                                    <i class="bi bi-image-fill text-success pe-2"></i>
+                                    Photo
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal"
+                                   data-bs-target="#feedActionVideo"> <i
+                                        class="bi bi-camera-reels-fill text-info pe-2"></i>Video</a>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link bg-light py-1 px-2 mb-0" data-bs-toggle="modal"
+                                        data-bs-target="#PodcastModal">
+                                    <img src="/static/images/podcast.png" alt="Podcast" width="14" height="19">
+                                    Podcast
+                                </button>
+                            </li>
+                        </ul>
+                        <!-- Share feed toolbar END -->
+                    </div>
+                    <!-- Share feed END -->
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="PodcastModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add new podcast</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="{% url 'App_content:new-podcast' %}"
+                                          enctype="multipart/form-data">
+                                        <input type="hidden" name="csrfmiddlewaretoken"
+                                               value="TS7idY2BqTWq3J5xwC7qbDgDziN901ExJ6aUkhoSkYzJhBEd8G6auHjC5YP4w12S">
+                                        <div class="form-group">
+                                            <label for="title">Title</label>
+                                            <input type="text" class="form-control" id="title" name="title"
+                                                   placeholder="Topic of discussion">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="cover_image">Cover Image</label>
+                                            <input type="file" class="form-control" id="cover_image" accept="image/*"
+                                                   name="cover_image">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="id-new-podcast">
+                                                Audio File
+                                                <img src="{% static 'images/podcast.png' %}" alt="Podcast" width="100"
+                                                     height="120">
+                                                <input type="file" accept="audio/*" name="podcastFile"
+                                                       id="id-new-podcast" onchange="addedFile()">
+                                            </label>
+                                            <p id="addedFile" style="display: none;">
+                                                Added:
+                                                <script>
+                                                    let added = document.getElementById('addedFile');
+                                                    let podcastFile = document.getElementById('id-new-podcast');
+                                                    console.log(podcastFile.value);
+                                                    const addedFile = () => {
+                                                        added.style.display = 'block';
+                                                        added.innerText += podcastFile.value;
+                                                    }
+                                                </script>
+                                            </p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="id-description">Description</label>
+                                            <textarea type="text" id="id-description" name="description"
+                                                      class="form-control"
+                                                      placeholder="Write a short description"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-outline-primary" type="submit">Post</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-showcase-in-bigscreen">
+                        <!-- Card feed item START -->
+                        {% for post in postList_first %}
+                            <div class="card mb-1">
+                                <!-- Card header START -->
+                                <div class="card-header border-0 pb-0">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <!-- Avatar -->
+                                            <div class="avatar avatar-story me-2">
+                                                <a href="#">
+                                                    <img class="avatar-img rounded-circle"
+                                                         src="{{ post.author.user_main_profile.profile_picture.url }}"
+                                                         alt="">
+                                                </a>
+                                            </div>
+                                            <!-- Info -->
+                                            <div>
+                                                <div class="nav nav-divider">
+                                                    <h6 class="nav-item card-title mb-0">
+                                                        <a href="#"> {{ post.author.user_main_profile.fullName }} </a>
+                                                    </h6>
+                                                    <span class="nav-item small post-city">{{ post.author.user_main_profile.city }},
+                                                Bangladesh </span>
+                                                </div>
+                                                <p class="mb-0 small created-datetime">
+                                                    {{ post.created_on }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- Card feed action dropdown START -->
+                                        <div class="dropdown">
+                                            {% if post.author == request.user %}
+                                                <a href="#"
+                                                   class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
+                                                   id="cardFeedAction_first" data-bs-toggle="dropdown"
+                                                   aria-expanded="false">
+                                                    <i class="bi bi-three-dots"></i>
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <button class="dropdown-item"
+                                                                onclick="removePost_{{ post.id }}()">
+                                                            Delete
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                                <script>
+                                                    let removePost_{{ post.id }} = () => {
+                                                        $.ajax({
+                                                            type: 'GET',
+                                                            url: `/content/make-status-false/{{ post.id }}/`,
+                                                            success: function (response) {
+                                                                alert(response);
+                                                                window.location.reload();
+                                                            },
+                                                            error: function (err) {
+                                                                console.log("-------------Error------------");
+                                                            }
+                                                        });
+                                                    }
+                                                </script>
+                                            {% endif %}
+                                            <!-- Card feed action dropdown menu -->
+                                        </div>
+                                        <!-- Card feed action dropdown END -->
+                                    </div>
+                                </div>
+                                <!-- Card header END -->
+                                <!-- Card body START -->
+                                <div class="card-body">
+                                    <p>{{ post.my_text|safe }}</p>
+                                    <!-- Card img -->
+                                    {% if post.post_image1 and post.post_image2 and post.post_image3 %}
+                                        <table>
+                                            <tr>
+                                                <td colspan="2" rowspan="2">
+                                                    <img class="card-img" src="{{ post.post_image1.url }}"
+                                                         alt="Post Image ">
+                                                </td>
+                                                <td colspan="1" rowspan="2">
+                                                    <img class="card-img" src="{{ post.post_image2.url }}"
+                                                         alt="Post Image ">
+                                                    <img class="card-img mt-2" src="{{ post.post_image3.url }}"
+                                                         alt="Post Image ">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    {% elif post.post_image1 and post.post_image2 %}
+                                        <table>
+                                            <tr>
+                                                <td rowspan="2">
+                                                    <img class="card-img" src="{{ post.post_image1.url }}"
+                                                         alt="Post Image ">
+                                                </td>
+                                                <td rowspan="2">
+                                                    <img class="card-img" src="{{ post.post_image2.url }}"
+                                                         alt="Post Image ">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    {% elif post.post_image1 %}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <img src="{{ post.post_image1.url }}" alt="Image 2">
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="row"></div>
+                                    {% endif %}
+                                    <!-- Feed react START -->
+                                    <ul class="nav nav-stack py-3 small">
+                                        <li class="nav-item">
+                                            {% if post.id in loved_post_list %}
+                                                <a class="nav-link" id="id-love-{{ post.id }}"
+                                                   href="{% url 'App_content:no-love-react' pk=post.id %}">
+                                                    <i class="bi bi-heart-fill"></i> Loved
+                                                </a>
+                                            {% else %}
+                                                <a class="nav-link" id="id-no-love-{{ post.id }}"
+                                                   href="{% url 'App_content:love-react' pk=post.id %}">
+                                                    <i class="bi bi-heart"></i> Love
+                                                </a>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+
+                                    <!-- Feed react END -->
+                                    <!-- Comment wrap END -->
+                                </div>
+                                <!-- Card body END -->
+                            </div>
+                        {% endfor %}
+
+                        <!-- Card feed item END -->
+
+                        <!-- Load more button START -->
+                        <div id="load-more-container">
+                            <button role="button" class="btn btn-primary w-100 mt-2 mb-2" data-bs-toggle="button"
+                                    aria-pressed="true" id="id-load-more-button"
+                                    onclick="document.getElementById('id-load-more-post').style.display='block'; document.getElementById('load-more-container').style.display='none'">
+                            <span class="load-text">
+                                Load more
+                            </span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Load more button END -->
+
+                </div>
+                <!-- Main content END -->
+
+                <!-- Right sidebar START -->
+                <div class="col-lg-3">
+                    <div class="row g-4">
+                        <!-- Card follow START -->
+                        <div class="col-sm-6 col-lg-12">
+                            <div class="card">
+                                <!-- Card header START -->
+                                <div class="card-header pb-0 border-0">
+                                    <h5 class="card-title mb-0">Partner Requests</h5>
+                                </div>
+                                <!-- Card header END -->
+                                <!-- Card body START -->
+                                {% if partnerRequests %}
+                                    <div class="card-body">
+                                        <!-- Connection item START -->
+                                        {% for partnerRequest in partnerRequests %}
+                                            {% if partnerRequest.author != request.user %}
+                                                <div class="hstack gap-2 mb-3">
+                                                    <!-- Avatar -->
+                                                    <div class="avatar">
+                                                        <a href="#">
+                                                            <img class="avatar-img rounded-circle"
+                                                                 src="{{ partnerRequest.author.user_main_profile.profile_picture.url }}"
+                                                                 alt=""></a>
+                                                    </div>
+                                                    <!-- Title -->
+                                                    <div class="overflow-hidden">
+                                                        <a class="h6 mb-0"
+                                                           href="#">{{ partnerRequest.author.user_main_profile.fullName }}</a>
+                                                        <p class="mb-0 small text-truncate">Author</p>
+                                                    </div>
+                                                    <!-- Button -->
+                                                    <a class="btn btn-primary-soft rounded-circle icon-md ms-auto"
+                                                       href="#">
+                                                        <i class="fa fa-solid fa-arrow-right"> </i>
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <!-- Connection item END -->
+                                        <!-- View more button -->
+                                        <div class="d-grid mt-3">
+                                            <a class="btn btn-sm btn-primary-soft"
+                                               href="{% url 'App_post:partner-request' %}">View more</a>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="card-body">
+                                        <small>
+                                            <b>No Partner Request</b>
+                                        </small>
+                                    </div>
+                                {% endif %}
+                                <!-- Card body END -->
+                            </div>
+                        </div>
+                        <!-- Card follow START -->
+
+                        <!-- Card follow START -->
+                        <div class="col-sm-6 col-lg-12">
+                            <div class="card">
+                                <!-- Card header START -->
+                                <div class="card-header pb-0 border-0">
+                                    <h5 class="card-title mb-0">Contact Requests</h5>
+                                </div>
+                                <!-- Card header END -->
+                                <!-- Card body START -->
+                                {% if six_users %}
+                                    <div class="card-body">
+                                        <!-- Connection item START -->
+                                        {% for user in six_users %}
+                                            {% if user == request.user %}
+                                            {% else %}
+                                                <div class="hstack gap-2 mb-3">
+                                                    <!-- Avatar -->
+                                                    <div class="avatar">
+                                                        <a href="#">
+                                                            <img class="avatar-img rounded-circle"
+                                                                 src="{{ user.user_main_profile.profile_picture.url }}"
+                                                                 alt=""></a>
+                                                    </div>
+                                                    <!-- Title -->
+                                                    <div class="overflow-hidden">
+                                                        <a class="h6 mb-0"
+                                                           href="#">{{ user.user_main_profile.fullName }}</a>
+                                                        <p class="mb-0 small text-truncate"></p>
+                                                    </div>
+                                                    <!-- Button -->
+                                                    <a class="btn btn-primary-soft rounded-circle icon-md ms-auto"
+                                                       href="{% url 'App_content:connection-request' user_id=user.id %}">
+                                                        <i class="fa fa-solid fa-plus"> </i>
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <!-- Connection item END -->
+                                        <!-- View more button -->
+                                        <div class="d-grid mt-3">
+                                            <a class="btn btn-sm btn-primary-soft" href="#">View more</a>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="card-body">
+                                        <small>
+                                            <b>Connectors</b>
+                                        </small>
+                                    </div>
+                                {% endif %}
+                                <!-- Card body END -->
+                            </div>
+                        </div>
+                        <!-- Card follow START -->
+
+                        <!-- Card News START -->
+                        <div class="col-sm-6 col-lg-12">
+                            <div class="card">
+                                <!-- Card header START -->
+                                <div class="card-header pb-0 border-0">
+                                    <h5 class="card-title mb-0">New Jobs</h5>
+                                </div>
+                                <!-- Card header END -->
+                                <!-- Card body START -->
+                                <div class="card-body">
+                                    <!-- News item -->
+                                    {% for job in jobs %}
+                                        <div class="mb-3">
+                                            <h6 class="mb-0">
+                                                <a href="{% url 'App_post:single-job-post' pk=job.id %}">
+                                                    {{ job.job_title }}
+                                                </a>
+                                            </h6>
+                                            <small>{{ job.position }}</small>
+                                        </div>
+                                    {% endfor %}
+                                    <!-- Load more comments -->
+                                    <a href="#" role="button"
+                                       class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center"
+                                       data-bs-toggle="button" aria-pressed="true">
+                                        <div class="spinner-dots me-2">
+                                            <span class="spinner-dot"></span>
+                                            <span class="spinner-dot"></span>
+                                            <span class="spinner-dot"></span>
+                                        </div>
+                                        View all
+                                    </a>
+                                </div>
+                                <!-- Card body END -->
+                            </div>
+                        </div>
+                        <!-- Card News END -->
+                    </div>
+                </div>
+                <!-- Right sidebar END -->
+
+            </div> <!-- Row END -->
+        </div>
+        <div class="container" id="id-load-more-post">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- Card feed item START -->
+                    {% for post in postList_second %}
+                        <div class="card mt-3">
+                            <!-- Card header START -->
+                            <div class="card-header border-0 pb-0">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <!-- Avatar -->
+                                        <div class="avatar avatar-story me-2">
+                                            <a href="#">
+                                                <img class="avatar-img rounded-circle"
+                                                     src="{{ post.author.user_main_profile.profile_picture.url }}"
+                                                     alt="">
+                                            </a>
+                                        </div>
+                                        <!-- Info -->
+                                        <div>
+                                            <div class="nav nav-divider">
+                                                <h6 class="nav-item card-title mb-0">
+                                                    <a href="#"> {{ post.author.user_main_profile.fullName }} </a>
+                                                </h6>
+                                                <span class="nav-item small post-city">{{ post.author.user_main_profile.city }},
+                                                Bangladesh </span>
+                                            </div>
+                                            <p class="mb-0 small created-datetime">
+                                                {{ post.created_on }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!-- Card feed action dropdown START -->
+                                    <div class="dropdown">
+                                        <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
+                                           id="cardFeedAction_second" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots"></i>
+                                        </a>
+                                        <!-- Card feed action dropdown menu -->
+                                    </div>
+                                    <!-- Card feed action dropdown END -->
+                                </div>
+                            </div>
+                            <!-- Card header END -->
+                            <!-- Card body START -->
+                            <div class="card-body">
+                                <p>{{ post.my_text|safe }}</p>
+                                <!-- Card img -->
+                                {% if post.post_image1 and post.post_image2 and post.post_image3 %}
+                                    <table>
+                                        <tr>
+                                            <td colspan="2" rowspan="2">
+                                                <img class="card-img" src="{{ post.post_image1.url }}"
+                                                     alt="Post Image ">
+                                            </td>
+                                            <td colspan="1" rowspan="2">
+                                                <img class="card-img" src="{{ post.post_image2.url }}"
+                                                     alt="Post Image ">
+                                                <img class="card-img mt-2" src="{{ post.post_image3.url }}"
+                                                     alt="Post Image ">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                {% elif post.post_image1 and post.post_image2 %}
+                                    <table>
+                                        <tr>
+                                            <td rowspan="2">
+                                                <img class="card-img" src="{{ post.post_image1.url }}"
+                                                     alt="Post Image ">
+                                            </td>
+                                            <td rowspan="2">
+                                                <img class="card-img" src="{{ post.post_image2.url }}"
+                                                     alt="Post Image ">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                {% elif post.post_image1 %}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <img src="{{ post.post_image1.url }}" alt="Image 2">
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="row"></div>
+                                {% endif %}
+                                <!-- Feed react START -->
+                                <ul class="nav nav-stack py-3 small">
+                                    <li class="nav-item">
+                                        {% if post.id in loved_post_list %}
+                                            <a class="nav-link" id="id-love-{{ post.id }}"
+                                               href="{% url 'App_content:no-love-react' pk=post.id %}">
+                                                <i class="bi bi-heart-fill"></i> Loved
+                                            </a>
+                                        {% else %}
+                                            <a class="nav-link" id="id-no-love-{{ post.id }}"
+                                               href="{% url 'App_content:love-react' pk=post.id %}">
+                                                <i class="bi bi-heart"></i> Love
+                                            </a>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+
+                                <!-- Feed react END -->
+                                <!-- Comment wrap END -->
+                            </div>
+                            <!-- Card body END -->
+                        </div>
+                    {% endfor %}
+                    <!-- Card feed item END -->
+                </div>
+            </div>
+        </div>
+        <div class="container post-showcase-in-smallscreen" id="small-screen-show">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- Card feed item START -->
+                    {% for post in allPost %}
+                        <div class="card mt-3">
+                            <!-- Card header START -->
+                            <div class="card-header border-0 pb-0">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <!-- Avatar -->
+                                        <div class="avatar avatar-story me-2">
+                                            <a href="#">
+                                                <img class="avatar-img rounded-circle"
+                                                     src="{{ post.author.user_main_profile.profile_picture.url }}"
+                                                     alt="">
+                                            </a>
+                                        </div>
+                                        <!-- Info -->
+                                        <div>
+                                            <div class="nav nav-divider">
+                                                <h6 class="nav-item card-title mb-0">
+                                                    <a href="#"> {{ post.author.user_main_profile.fullName }} </a>
+                                                </h6>
+                                                <span class="nav-item small post-city">{{ post.author.user_main_profile.city }},
+                                                Bangladesh </span>
+                                            </div>
+                                            <p class="mb-0 small created-datetime">
+                                                {{ post.created_on }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!-- Card feed action dropdown START -->
+                                    <div class="dropdown">
+                                        <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
+                                           id="cardFeedAction_small" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots"></i>
+                                        </a>
+                                        <!-- Card feed action dropdown menu -->
+                                        <button class="btn btn-secondary btn-sm" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <button class="dropdown-item" onclick="removePost_{{ post.id }}()">
+                                                    Delete
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- Card feed action dropdown END -->
+                                </div>
+                            </div>
+                            <!-- Card header END -->
+                            <!-- Card body START -->
+                            <div class="card-body">
+                                <p>{{ post.my_text|safe }}</p>
+                                <!-- Card img -->
+                                {% if post.post_image1 and post.post_image2 and post.post_image3 %}
+                                    <table>
+                                        <tr>
+                                            <td colspan="2" rowspan="2">
+                                                <img class="card-img" src="{{ post.post_image1.url }}"
+                                                     alt="Post Image ">
+                                            </td>
+                                            <td colspan="1" rowspan="2">
+                                                <img class="card-img" src="{{ post.post_image2.url }}"
+                                                     alt="Post Image ">
+                                                <img class="card-img mt-2" src="{{ post.post_image3.url }}"
+                                                     alt="Post Image ">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                {% elif post.post_image1 and post.post_image2 %}
+                                    <table>
+                                        <tr>
+                                            <td rowspan="2">
+                                                <img class="card-img" src="{{ post.post_image1.url }}"
+                                                     alt="Post Image ">
+                                            </td>
+                                            <td rowspan="2">
+                                                <img class="card-img" src="{{ post.post_image2.url }}"
+                                                     alt="Post Image ">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                {% elif post.post_image1 %}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <img src="{{ post.post_image1.url }}" alt="Image 2">
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="row"></div>
+                                {% endif %}
+                                <!-- Feed react START -->
+                                <ul class="nav nav-stack py-3 small">
+                                    <li class="nav-item">
+                                        {% if post.id in loved_post_list %}
+                                            <a class="nav-link" id="id-love-{{ post.id }}"
+                                               href="{% url 'App_content:no-love-react' pk=post.id %}">
+                                                <i class="bi bi-heart-fill"></i> Loved
+                                            </a>
+                                        {% else %}
+                                            <a class="nav-link" id="id-no-love-{{ post.id }}"
+                                               href="{% url 'App_content:love-react' pk=post.id %}">
+                                                <i class="bi bi-heart"></i> Love
+                                            </a>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+
+                                <!-- Feed react END -->
+                                <!-- Comment wrap END -->
+                            </div>
+                            <!-- Card body END -->
+                        </div>
+                    {% endfor %}
+                    <!-- Card feed item END -->
+                </div>
+            </div>
+        </div>
+        <!-- Container END -->
+    </main>
+
+    <!-- All modals -->
+    <!-- Button trigger modal -->
+    <button type="button" id="id-modal-opener" style="display: none;" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+        Launch demo modal
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-2 pb-2 pr-5 pl-5">
+                    {% include 'App_main/storySharingTextBox.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="feedActionPhoto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Upload Post and Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% include 'App_main/storySharingTextBoxWithImage.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const storyTellingModalOpener = () => {
+            let modalOpener = document.getElementById('id-modal-opener');
+            modalOpener.click();
+        }
+    </script>
+{% endblock %}

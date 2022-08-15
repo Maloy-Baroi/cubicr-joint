@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Title</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            background-image: url("{% static 'bg_dark.jpg' %}");
+        }
+
+        .container-fluid {
+            padding: 2rem;
+        }
+
+        .card {
+            color: #666b7a;
+            font-weight: 600;
+            border-width: 8px;
+            border-color: #444857;
+            background-color: #1d1e22;
+        }
+
+        .card-body {
+            padding: 1rem 2rem;
+        }
+
+        .input-daterange > input {
+            cursor: pointer;
+            border-radius: 3px !important;
+            text-align: inherit;
+        }
+
+        .form-radio {
+            padding-top: 6px;
+        }
+
+        .radio-inline {
+            font-weight: 500;
+        }
+
+        .form-check-input {
+            width: 25px;
+            height: 25px;
+            margin: 0px 6px 2px;
+            vertical-align: middle;
+        }
+
+        .input-group-text {
+            border-right: 0px;
+            background-color: #ffffff;
+            border-radius: 0.25rem 0 0 0.25rem;
+        }
+
+        .input-username > .form-control {
+            border-left: 0px;
+            border-radius: 0 0.25rem 0.25rem 0;
+        }
+
+
+        @media (max-width: 767px) {
+            .img-title {
+                display: block;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-center">Release New Episode
+                <span>
+                    <a href="{% url 'home' %}" style="float: right; text-decoration: none; color: #666B7AFF">✖</a>
+                </span>
+            </h4>
+            <form enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12">
+                        <label for="title">Post</label>
+                        <textarea type="text" class="form-control" id="title" name="title"
+                                  placeholder="Write Something..." rows="3"></textarea>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="form-group col-lg-4 col-md-4 col-sm-12">
+                        <label for="post_image1" class="form-label">Upload an image</label>
+                        <input type="file" class="form-control" id="post_image1" name="post_image1">
+                    </div>
+                    <div class="form-group col-lg-4 col-md-4 col-sm-12">
+                        <label for="post_image2" class="form-label">Upload an image</label>
+                        <input type="file" class="form-control" id="post_image2" name="post_image2">
+                    </div>
+                    <div class="form-group col-lg-4 col-md-4 col-sm-12">
+                        <label for="post_image3" class="form-label">Upload an image</label>
+                        <input type="file" class="form-control" id="post_image3" name="post_image3">
+                    </div>
+                </div>
+                <hr>
+                <button class="w-100 btn btn-secondary btn-lg" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+</body>
+</html>

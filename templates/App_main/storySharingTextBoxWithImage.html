@@ -1,0 +1,26 @@
+{% load static %}
+{% load crispy_forms_filters %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<form method="post" class="form-group" enctype="multipart/form-data" action="{% url 'App_content:new-post' %}">
+    {% csrf_token %}
+    <fieldset class="form-group">
+        <label for="Title">Title</label>
+        <input type="text" id="Title" name="topic_name" class="form-control">
+    </fieldset>
+    <div id="container mt-2">
+        <label for="my-textarea">Write A small story</label>
+        <textarea id="my-textarea" name="my-content" class="form-control"></textarea>
+    </div>
+    <div class="container">
+        <div class="row mt-2">
+                <input type="file" name="image_1" class="form-control">
+        </div>
+        <div class="row mt-2">
+            <input type="file" name="image_2" class="form-control">
+        </div>
+        <div class="row mt-2">
+            <input type="file" name="image_3" class="form-control">
+        </div>
+    </div>
+    <button class="btn btn-outline-success w-80px m-3" type="submit" onclick="getContent()">Post</button>
+</form>

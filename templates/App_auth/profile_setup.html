@@ -1,0 +1,446 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'App_auth/css/progressBar.css' %}">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <style>
+        h1 {
+            font-size: 28px;
+        }
+
+        h2 {
+            font-size: 23.8px;
+        }
+
+        h3 {
+            font-size: 18.2px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 0;
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            cursor: pointer;
+            -webkit-transition: all 0.3s ease-in-out 0s;
+            -moz-transition: all 0.3s ease-in-out 0s;
+            -ms-transition: all 0.3s ease-in-out 0s;
+            -otransition: all 0.3s ease-in-out 0s;
+            transition: all 0.3s ease-in-out 0s;
+        }
+
+        .btn-primary {
+            background: #fb8200;
+            color: #fff;
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background: #1754d1;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            -ms-box-shadow: none;
+            -obox-shadow: none;
+            box-shadow: none;
+        }
+
+        .btn-default {
+            background: #666666;
+            color: #fff;
+        }
+
+        input[type=text],
+        input[type=email],
+        input[type=tel],
+        input[type=password],
+        textarea,
+        select {
+            width: 100%;
+            display: block;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+
+        #id_zipcode {
+            width: 100%;
+            display: block;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            margin: 20px 0 20px 5px;
+        }
+
+        .mar-b-0 {
+            margin-bottom: 0 !important;
+        }
+
+        a {
+            color: #1754d1;
+        }
+
+        a:hover {
+            color: #fb8200;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            background: url(https://www.noupe.com/wp-content/uploads/2009/10/pattern-13.jpg);
+            font-family: "Merriweather", serif;
+            font-weight: 300;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .form-wizard {
+            position: relative;
+            display: table;
+            margin: 0 auto;
+            max-width: 540px;
+        }
+
+        .steps {
+            margin: 40px 0;
+            overflow: hidden;
+        }
+
+        .steps ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .steps ul li {
+            float: left;
+            color: #fff;
+            padding: 0 15px;
+            position: relative;
+            cursor: pointer;
+            -webkit-transition: all 0.4s ease-in-out 0;
+            -moz-transition: all 0.4s ease-in-out 0;
+            -ms-transition: all 0.4s ease-in-out 0;
+            -otransition: all 0.4s ease-in-out 0;
+            transition: all 0.4s ease-in-out 0;
+        }
+
+        .steps ul li:hover, .steps ul li.active {
+            color: #fb8200;
+        }
+
+        .steps ul li:hover span, .steps ul li.active span {
+            background: #fb8200;
+            color: #fff;
+        }
+
+        .steps ul li:hover::after, .steps ul li.active::after {
+            background: #fb8200;
+            width: 100%;
+        }
+
+        .steps ul li::before, .steps ul li::after {
+            content: "";
+            position: absolute;
+            left: -50%;
+            top: 22px;
+            width: 100%;
+            height: 3px;
+            background: #fff;
+            -webkit-transition: all 0.4s ease-in-out 0;
+            -moz-transition: all 0.4s ease-in-out 0;
+            -ms-transition: all 0.4s ease-in-out 0;
+            -otransition: all 0.4s ease-in-out 0;
+            transition: all 0.4s ease-in-out 0;
+            -webkit-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            -otransform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .steps ul li::after {
+            width: 0;
+        }
+
+        .steps ul li span {
+            display: block;
+            margin: 0 auto 15px;
+            width: 35px;
+            height: 35px;
+            text-align: center;
+            background: #fff;
+            font-size: 18px;
+            line-height: 35px;
+            font-weight: 300;
+            color: #000;
+            position: relative;
+            z-index: 1;
+            -webkit-transition: all 0.4s ease-in-out 0;
+            -moz-transition: all 0.4s ease-in-out 0;
+            -ms-transition: all 0.4s ease-in-out 0;
+            -otransition: all 0.4s ease-in-out 0;
+            transition: all 0.4s ease-in-out 0;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            -ms-border-radius: 2px;
+            -oborder-radius: 2px;
+            border-radius: 2px;
+        }
+
+        .steps ul li:first-child::before, .steps ul li:first-child::after {
+            display: none;
+        }
+
+        .form-container {
+            clear: both;
+            display: none;
+            left: 100%;
+            background: #fff;
+            padding: 30px;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            -ms-border-radius: 4px;
+            -oborder-radius: 4px;
+            border-radius: 4px;
+            -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+            -moz-box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+            -ms-box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+            -obox-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .form-title {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            position: relative;
+        }
+
+        .form-title::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            height: 2px;
+            background: #fb8200;
+            -webkit-transform: translateX(-50%);
+            -moz-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -otransform: translateX(-50%);
+            transform: translateX(-50%);
+        }
+
+        .form-wizard input[type=text],
+        .form-wizard input[type=email],
+        .form-wizard input[type=tel],
+        .form-wizard input[type=password],
+        .form-wizard input[type=date],
+        .form-wizard textarea {
+            margin: 20px 0;
+        }
+
+        .form-wizard select {
+            margin: 10px 0;
+        }
+
+        .form-wizard #id_Date_of_Birth {
+            width: 100%;
+            display: block;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+
+        .form-wizard .picture-div {
+            margin: 20px 0;
+        }
+
+        .form-wizard #id_ID_card, #id_profile_picture {
+            margin: 10px 0;
+        }
+    </style>
+    <title>Profile Setup</title>
+</head>
+<body>
+<div class="form-wizard">
+    <div class="steps">
+        <h3>You have completed your profile 25%</h3>
+    </div>
+    <div class="myContainer">
+        <form id="id-profile-form" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <div id="id-created-account-div" class="form-container animated active">
+                <h2 class="text-center form-title">Created Account</h2>
+                <div class="form-group">
+                    <b style="font-weight: 600">Registered with Email:
+                        <b id="id-running-user"></b>
+                    </b>
+                </div>
+                <div class="form-group text-center mar-b-0">
+                    <input type="button" value="NEXT" id="id-next-to-personal-info" onclick="personalOpen()"
+                           class="btn btn-primary next">
+                </div>
+            </div>
+            <div id="id-personal-info-div" class="form-container animated">
+                <h2 class="text-center form-title">Personal Info</h2>
+                <div class="form-group">
+                    {#                    {{ profileForm.fullName }}#}
+                    <input type="text" name="fullName" placeholder="Full Name" required="" id="id_fullName">
+                </div>
+                <div class="form-group">
+                    {#                    {{ profileForm.phone_number }}#}
+                    <input type="text" name="phone_number" placeholder="Mobile Number(example: +8801855279..."
+                           required="" id="id_phone_number">
+                </div>
+                <div class="form-group">
+                    {#                    {{ profileForm.Date_of_Birth }}#}
+                    <input type="date" name="Date_of_Birth" required="" id="id_Date_of_Birth">
+                </div>
+                {#                <div class="form-group">#}
+                {#                    {{ profileForm.house_no }}#}
+                {#                    {{ profileForm.area }}#}
+                {#                    <div style="display: flex">#}
+                {#                        {{ profileForm.city }}#}
+                {#                        {{ profileForm.zipcode }}#}
+                {#                    </div>#}
+                {#                </div>#}
+                <div class="form-group">
+                    <input type="text" name="house_no" placeholder="House No." required="" id="id_house_no">
+                    <input type="text" name="area" placeholder="Area" required="" id="id_area">
+                    <div style="display: flex">
+                        <input type="text" name="city" placeholder="City" required="" id="id_city">
+                        <input type="number" name="zipcode" value="1200" min="0" required="" id="id_zipcode">
+                    </div>
+                </div>
+                <div class="form-group text-center mar-b-0">
+                    <input type="button" value="BACK" id="id-before-to-created-account" onclick="accountOpen()"
+                           class="btn btn-default back">
+                    <input type="button" value="NEXT" id="id-next-to-extra-field" onclick="extraOpen()"
+                           class="btn btn-primary next">
+                </div>
+            </div>
+            <div id="id-extra-fields-div" class="form-container animated">
+                <h2 class="text-center form-title">Extra Info</h2>
+
+                <div class="form-group picture-div">
+                    <label for="id_career_objective">Career Objective (Limit 80 words)</label>
+                    {#                    {{ profileForm.career_objective }}#}
+                    <textarea name="career_objective" cols="40" rows="10" required="" id="id_career_objective">Opportunities don't happen, You create them. </textarea>
+                </div>
+
+                <div class="form-group picture-div">
+                    <label for="id_gender">Gender</label>
+                    {#                    {{ profileForm.gender }}#}
+                    <select name="gender" required="" id="id_gender">
+                        <option value="" selected="">---------</option>
+
+                        <option value="Male">Male</option>
+
+                        <option value="Female">Female</option>
+
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group picture-div">
+                    <label for="id_ID_card">ID Card (It must be your student ID card).</label>
+                    {#                    {{ profileForm.ID_card }}#}
+                    <input type="file" name="ID_card" accept="image/*" required="" id="id_ID_card">
+                </div>
+                <div class="form-group picture-div">
+                    <label for="id_profile_picture">Try to upload a professional picture.</label>
+                    {#                    {{ profileForm.profile_picture }}#}
+                    <input type="file" name="profile_picture" accept="image/*" required="" id="id_profile_picture">
+                </div>
+                <div class="form-group text-center mar-b-0">
+                    <input type="button" value="BACK" onclick="personalOpen()"
+                           id="id-before-to-personal-info" class="btn btn-default back">
+                    <input type="button" value="NEXT" onclick="finishOpen()"
+                           id="id-next-to-finish" class="btn btn-primary next">
+                </div>
+
+            </div>
+            <div id="id-finish-div" class="form-container animated">
+                <h2 class="text-center form-title">Finish</h2>
+
+                <div class="form-group">
+                    <h3 class="text-center">Thanks for Stay Tuned!</h3>
+                    <p class="text-center">Made by
+                        <a href="#" target="_blank">Team Explorer</a>
+                    </p>
+                </div>
+                <div class="form-group text-center mar-b-0">
+                    <input type="button" value="BACK" onclick="extraOpen()"
+                           id="id-before-to-extra-fields" class="btn btn-default back">
+                    <input type="submit"
+                           value="SUBMIT" class="btn btn-primary submit">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    let id_running_user = document.getElementById('id-running-user');
+    let next_to_personal = document.getElementById('id-next-to-personal-info');
+    let before_to_created = document.getElementById('id-before-to-created-account');
+    let next_to_extra = document.getElementById('id-next-to-extra-field');
+    let before_to_personal = document.getElementById('id-before-to-personal-info');
+    let next_to_finish = document.getElementById('id-next-to-finish');
+    let before_to_extra = document.getElementById('id-before-to-extra-fields');
+
+    let account = document.getElementById('id-created-account-div')
+    let personal = document.getElementById('id-personal-info-div')
+    let extra = document.getElementById('id-extra-fields-div')
+    let finish = document.getElementById('id-finish-div')
+
+    id_running_user.innerText = localStorage.getItem('nowUser');
+
+    const accountOpen = () => {
+        account.classList.add('active');
+        personal.classList.remove('active');
+        extra.classList.remove('active');
+        finish.classList.remove('active');
+    }
+
+    const personalOpen = () => {
+        account.classList.remove('active');
+        personal.classList.add('active');
+        extra.classList.remove('active');
+        finish.classList.remove('active');
+    }
+
+    const extraOpen = () => {
+        account.classList.remove('active');
+        personal.classList.remove('active');
+        extra.classList.add('active');
+        finish.classList.remove('active');
+    }
+
+    const finishOpen = () => {
+        account.classList.remove('active');
+        personal.classList.remove('active');
+        extra.classList.remove('active');
+        finish.classList.add('active');
+    }
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+</html>

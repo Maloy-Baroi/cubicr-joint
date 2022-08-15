@@ -1,0 +1,50 @@
+{% extends 'Basement/base.html' %}
+{% load crispy_forms_filters %}
+{% block main %}
+    <style>
+    #next-section {
+        background-color: white;
+    }
+
+    label {
+        margin-top: 20px;
+    }
+
+    .site-logo a {
+        color: black !important;
+    }
+
+    .site-navigation {
+        background-color: black;
+    }
+
+    .form-container {
+        margin-top: 50px;
+        box-shadow: 0 10px 20px #0b2361;
+        border-radius: 10px;
+    }
+
+    .form-container form {
+        padding: 20px;
+    }
+    </style>
+    <section class="site-section" id="next-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 mb-5 mb-lg-0 form-container">
+                    <div class="text-center">
+                        <h1 class="lead mt-3" style="font-weight: bold;">Post a Job</h1>
+                    </div>
+                    <form action="" method="POST" class="">{% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="row form-group">
+                            <div class="col-md-12 mt-2">
+                                <input type="submit" value="POST" class="btn btn-primary btn-md w-100 text-white">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

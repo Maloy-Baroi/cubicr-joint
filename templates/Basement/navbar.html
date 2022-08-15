@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- Header START -->
+<header class="navbar-light fixed-top header-static bg-mode">
+
+    <!-- Logo Nav START -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Logo START -->
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <span style="font-family: 'Monoton', cursive; color: #0a0c0e; font-weight: bold">WePoka</span>
+            </a>
+            <!-- Logo END -->
+
+            <!-- Responsive navbar toggler -->
+{#            <button class="navbar-toggler ms-auto icon-md btn btn-light p-0 collapsed" type="button"#}
+{#                    data-bs-toggle="collapse"#}
+{#                    data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"#}
+{#                    aria-label="Toggle navigation" id="navbarCollapseButton">#}
+                <button id="navbarCollapseButton">
+        <span class="navbar-toggler-animation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+            </button>
+
+            <!-- Main navbar START -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+
+                <!-- Nav Search START -->
+                <div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
+                    <div class="nav-item w-100">
+                        <form class="rounded position-relative">
+                            <input class="form-control ps-5 bg-light" type="search" placeholder="Search..."
+                                   aria-label="Search">
+                            <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y"
+                                    type="submit"><i class="bi bi-search fs-5"> </i></button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Nav Search END -->
+
+                <ul class="navbar-nav navbar-nav-scroll ms-auto">
+                    <!-- Nav item 1 Demos -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{% url 'App_post:display-job-post' %}" id="homeMenu">Jobs</a>
+                    </li>
+                    <!-- Nav item 2 Pages -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Pages</a>
+                        <ul class="dropdown-menu" aria-labelledby="pagesMenu">
+                            <li>
+                                <a class="dropdown-item" href="">Research/Project Join Request</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Nav item 3 Post -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="postMenu" data-bs-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Account </a>
+                        <ul class="dropdown-menu" aria-labelledby="postMenu">
+                            <li><a class="dropdown-item" href="#">Create a group</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_post:job-post' %}">Job Post</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_post:partner-request' %}">Join
+                                Research/Project</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                   href="{% url 'App_auth:general-profile-settings' %}">Settings</a></li>
+                            <li><a class="dropdown-item" href="{% url 'App_auth:logout' %}">Logout</a></li>
+                            <li>
+                                <div class="modeswitch-wrap" id="darkModeSwitch">
+                                    <div class="modeswitch-item">
+                                        <div class="modeswitch-icon"></div>
+                                    </div>
+                                    <span>Dark mode</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Nav item 4 Mega menu -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">My network</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Main navbar END -->
+
+            <!-- Nav right START -->
+            <ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
+                <li class="nav-item ms-2">
+                    <a class="nav-link icon-md btn btn-light p-0" href="">
+                        <i class="bi bi-chat-left-text-fill fs-6"> </i>
+                    </a>
+                </li>
+                <li class="nav-item dropdown ms-2">
+                    <a class="nav-link icon-md btn btn-light p-0" href="#" id="notifDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                        <span class="badge-notif animation-blink"></span>
+                        <i class="bi bi-bell-fill fs-6"> </i>
+                    </a>
+                </li>
+                <!-- Notification dropdown END -->
+                <li class="nav-item ms-2 dropdown">
+                    <a class="nav-link btn icon-md p-0" href="{% url 'App_auth:profile-view' %}" id="profileDropdown">
+                        <img class="avatar-img rounded-2" src="{{ request.user.user_main_profile.profile_picture.url }}"
+                             alt="">
+                    </a>
+                </li>
+            </ul>
+            <!-- Nav right END -->
+        </div>
+    </nav>
+    <!-- Logo Nav END -->
+</header>
+<!-- Header END -->
+
+<script>
+    let navbarCollapse = document.getElementById('navbarCollapse');
+    let navbarCollapseButton = document.getElementById('navbarCollapseButton');
+    let x = navbarCollapse.getAttribute("aria-expanded");
+
+    function navbarCollapseSetup() {
+        if (x === "true") {
+            x = "false"
+        } else {
+            x = "true"
+        }
+    }
+</script>
+</body>
+</html>

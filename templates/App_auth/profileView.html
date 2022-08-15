@@ -1,0 +1,723 @@
+{% extends 'Navbar.html' %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% block title %}
+    Profile
+{% endblock %}
+{% block main %}
+    <link rel="stylesheet" href="{% static 'css/Profile/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+    <style>
+        @media screen and (max-width: 991px) {
+            .post-card {
+                display: none;
+            }
+        }
+    </style>
+
+    <!-- **************** MAIN CONTENT START **************** -->
+    <main>
+        <!-- Container START -->
+        <div class="container mt-5">
+            <div class="row g-4 mt-5">
+
+                <!-- Main content START -->
+                <div class="col-lg-8 vstack gap-4">
+                    <!-- My profile START -->
+                    <div class="card">
+                        <!-- Cover image -->
+                        <div class="h-200px rounded-top"
+                             style="background-image:url({% static 'images/bg_dark.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                        <!-- Card body START -->
+                        <div class="card-body py-0">
+                            <div class="d-sm-flex align-items-start text-center text-sm-start">
+                                <div>
+                                    <!-- Avatar -->
+                                    <div class="avatar avatar-xxl mt-n5 mb-3">
+                                        <img class="avatar-img rounded-circle border border-white border-3"
+                                             src="{{ user.user_main_profile.profile_picture.url }}"
+                                             alt="{{ user.user_main_profile.fullName }}">
+                                    </div>
+                                </div>
+                                <div class="ms-sm-4 mt-sm-3">
+                                    <!-- Info -->
+                                    <h1 class="mb-0 h5">{{ user.user_main_profile.fullName }} <i
+                                            class="bi bi-patch-check-fill text-success small"></i></h1>
+                                    <p>Connections {{ totalConnections.count }}</p>
+                                </div>
+                                <!-- Button -->
+                                <div class="d-flex mt-3 justify-content-center ms-sm-auto">
+                                    <button class="btn btn-danger-soft me-2" type="button"
+                                            onclick="window.location.href='{% url "App_auth:general-profile-settings" %}'">
+                                        <i class="bi bi-pencil-fill pe-1"></i> Edit profile
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- List profile -->
+                        </div>
+                        <!-- Card body END -->
+                        <div class="card-footer mt-3 pt-2 pb-0">
+                            <!-- Nav profile pages -->
+                            <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
+                                <li class="nav-item"><a class="nav-link active" href="#"> Posts </a></li>
+                                <li class="nav-item"><a class="nav-link" href="#"> About </a></li>
+                                <li class="nav-item"><a class="nav-link" href="#"> Connections
+                                    <span class="badge bg-success bg-opacity-10 text-success small">
+                                        {{ totalConnections.count }}
+                                    </span>
+                                </a>
+                                </li>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- My profile END -->
+
+                    <!-- Card feed item START -->
+                    {% for post in sumPost %}
+                        <div class="card post-card">
+                            <!-- Card header START -->
+                            <div class="card-header border-0 pb-0">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <!-- Avatar -->
+                                        <div class="avatar avatar-story me-2">
+                                            <a href="#">
+                                                <img class="avatar-img rounded-circle"
+                                                     src="{{ request.user.user_main_profile.profile_picture.url }}"
+                                                     alt="">
+                                            </a>
+                                        </div>
+                                        <!-- Info -->
+                                        <div>
+                                            <div class="nav nav-divider">
+                                                <h6 class="nav-item card-title mb-0">
+                                                    <a href="#">
+                                                        {% if post.title %}
+                                                            {{ post.title }}
+                                                        {% else %}
+                                                            {{ post.topic_name }}
+                                                        {% endif %}
+                                                    </a>
+                                                </h6>
+                                                <span class="nav-item small"> {{ post.created_on }} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card feed action dropdown START -->
+                                    <div class="dropdown">
+                                        <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2"
+                                           id="cardFeedAction1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots"></i>
+                                        </a>
+                                        <!-- Card feed action dropdown menu -->
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction1">
+                                            <li>
+                                                {% if post.topic_name %}
+                                                    <button class="dropdown-item"
+                                                            onclick="removePost_{{ post.id }}()">
+                                                        Delete Post
+                                                    </button>
+                                                    <script>
+                                                        let removePost_{{ post.id }} = () => {
+                                                            $.ajax({
+                                                                type: 'GET',
+                                                                url: `/content/make-status-false/{{ post.id }}/`,
+                                                                success: function (response) {
+                                                                    alert(response);
+                                                                    window.location.reload();
+                                                                },
+                                                                error: function (err) {
+                                                                    console.log("-------------Error------------");
+                                                                }
+                                                            });
+                                                        }
+                                                    </script>
+                                                {% else %}
+                                                    <button class="dropdown-item"
+                                                            onclick="removePost_{{ post.id }}()">
+                                                        Delete Podcast
+                                                    </button>
+                                                    <script>
+                                                        let removePost_{{ post.id }} = () => {
+                                                            $.ajax({
+                                                                type: 'GET',
+                                                                url: `/content/make-podcast-status-false/{{ post.id }}/`,
+                                                                success: function (response) {
+                                                                    alert(response);
+                                                                    window.location.reload();
+                                                                },
+                                                                error: function (err) {
+                                                                    console.log("-------------Error------------");
+                                                                }
+                                                            });
+                                                        }
+                                                    </script>
+                                                {% endif %}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- Card feed action dropdown END -->
+                                </div>
+                            </div>
+                            <!-- Card header END -->
+                            <!-- Card body START -->
+                            <div class="card-body">
+                                {% if post.my_text %}
+                                    <p>
+                                        {{ post.my_text }}
+                                    </p>
+                                {% else %}
+                                    <audio controls>
+                                        <source src="{{ post.audio_file.url }}" type="audio/mpeg">
+                                    </audio>
+                                {% endif %}
+                                <!-- Card img -->
+                                {% if post.image1 %}
+                                    <img class="card-img" src="{{ post.post_image1.url }}" alt="Post">
+                                {% elif post.cover_image %}
+                                    <img class="card-img" src="{{ post.cover_image.url }}" alt="Post">
+                                {% else %}
+                                    <p style="color: darkred; text-align: center;">No Image Uploaded</p>
+                                {% endif %}
+                                <!-- Feed react START -->
+                                <ul class="nav nav-stack py-3 small">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#!"> <i
+                                                class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked
+                                            (56)</a>
+                                    </li>
+                                </ul>
+                                <!-- Feed react END -->
+                            </div>
+                            <!-- Card body END -->
+                        </div>
+                    {% endfor %}
+                    <!-- Card feed item END -->
+
+                </div>
+                <!-- Main content END -->
+
+                <!-- Right sidebar START -->
+                <div class="col-lg-4">
+
+                    <div class="row g-4">
+                        <!-- Card START -->
+                        <div class="col-md-6 col-lg-12">
+                            <div class="card">
+                                <div class="card-header border-0 pb-0">
+                                    <h5 class="card-title">About</h5>
+                                    <!-- Button modal -->
+                                </div>
+                                <!-- Card body START -->
+                                <div class="card-body position-relative pt-0">
+                                    <!-- Date time -->
+                                    <ul class="list-unstyled mt-3 mb-0">
+                                        <li class="mb-2">
+                                            <i class="bi bi-calendar-date fa-fw pe-1"></i>
+                                            Born:
+                                            <strong>{{ user.user_main_profile.Date_of_Birth }}</strong>
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-journal-bookmark fa-fw pe-1"></i>
+                                            Status: <strong>Student</strong>
+                                        </li>
+                                        <li>
+                                            <i class="bi bi-envelope fa-fw pe-1"></i>
+                                            Email:
+                                            <strong>{{ user }}</strong>
+                                        </li>
+                                    </ul>
+                                    <div style="display: flex; margin: 10px 0;">
+                                        <a class="btn btn-success w-100" href="{% url 'App_auth:cv-open' %}">
+                                            CV
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Card body END -->
+                            </div>
+                        </div>
+                        <!-- Card END -->
+
+                        <!-- Card START -->
+                        <div class="col-md-6 col-lg-12">
+                            <div class="card">
+                                <!-- Card header START -->
+                                <div class="card-header d-flex justify-content-between border-0">
+                                    <h5 class="card-title">Education</h5>
+                                    <button class="btn btn-primary-soft btn-sm" id="id-add-education"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                            onclick="educationFormOpen()">
+                                        <i class="fa fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <!-- Card header END -->
+                                <!-- Card body START -->
+                                {% for education in educations %}
+                                    <div class="card-body position-relative pt-0">
+                                        <!-- Experience item START -->
+                                        <div class="d-flex">
+                                            <!-- Avatar -->
+                                            <div class="avatar me-3">
+                                                <a href="#">
+                                                    <img class="avatar-img rounded-circle"
+                                                         src="{% static 'images/graduation-hat.png' %}"
+                                                         alt="">
+                                                </a>
+                                            </div>
+                                            <!-- Info -->
+                                            <div>
+                                                <h6 class="card-title mb-0">
+                                                    {{ education.level_of_education }}
+                                                </h6>
+                                                <p class="small">{{ education.starting_year }}
+                                                    – {{ education.passing_year }} <a
+                                                            class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- Experience item END -->
+                                    </div>
+                                {% endfor %}
+                                <!-- Card body END -->
+                            </div>
+                        </div>
+                        <!-- Card END -->
+
+                        <!-- Card START -->
+                        <div class="col-md-6 col-lg-12">
+                            <div class="card">
+                                <!-- Card header START -->
+                                <div class="card-header d-flex justify-content-between border-0">
+                                    <h5 class="card-title">Experience</h5>
+                                    <button class="btn btn-primary-soft btn-sm" id="id-add-experience"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                            onclick="experienceFormOpen()">
+                                        <i class="fa fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <!-- Card header END -->
+                                <!-- Card body START -->
+                                {% for experience in experiences %}
+                                    <div class="card-body position-relative pt-0">
+                                        <!-- Experience item START -->
+                                        <div class="d-flex">
+                                            <!-- Avatar -->
+                                            <div class="avatar me-3">
+                                                <a href="#">
+                                                    <img class="avatar-img rounded-circle"
+                                                         src="{% static 'images/performance.png' %}"
+                                                         alt="">
+                                                </a>
+                                            </div>
+                                            <!-- Info -->
+                                            <div>
+                                                <h6 class="card-title mb-0">
+                                                    {{ experience.Company }}
+                                                </h6>
+                                                <p class="small">
+                                                    {{ experience.starting_year.month }} {{ experience.starting_year.year }}
+                                                    – {{ experience.leaving_year.month }} {{ experience.leaving_year.year }}
+                                                    <a class="btn btn-primary-soft btn-xs ms-2" href="#">Edit </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- Experience item END -->
+                                    </div>
+                                {% endfor %}
+                                <!-- Card body END -->
+                            </div>
+                        </div>
+                        <!-- Card END -->
+
+                        <!-- Card START -->
+                        <div class="col-md-6 col-lg-12">
+                            <div class="card">
+                                <!-- Card header START -->
+                                <div class="card-header d-flex justify-content-between border-0">
+                                    <h5 class="card-title">Skills</h5>
+                                    <button class="btn btn-primary-soft btn-sm" id="id-add-skill"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                            onclick="skillFormOpen()">
+                                        <i class="fa fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <!-- Card header END -->
+                                <!-- Card body START -->
+                                {% for skill in skills %}
+                                    <div class="card-body position-relative pt-0">
+                                        <!-- Experience item START -->
+                                        <div class="d-flex">
+                                            <!-- Avatar -->
+                                            <div class="avatar me-3">
+                                                <a href="#">
+                                                    <img class="avatar-img rounded-circle"
+                                                         src="{% static 'images/skills.png' %}"
+                                                         alt="">
+                                                </a>
+                                            </div>
+                                            <!-- Info -->
+                                            <div>
+                                                <h6 class="card-title mb-0">
+                                                    {{ skill.title }}
+                                                </h6>
+                                                <p class="small">
+                                                    {{ skill.category }}
+                                                    <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- Experience item END -->
+                                    </div>
+                                {% endfor %}
+                                <!-- Card body END -->
+                            </div>
+                        </div>
+                        <!-- Card END -->
+
+                        <!-- Card START -->
+                        <div class="col-md-6 col-lg-12">
+                            <div class="card">
+                                <!-- Card header START -->
+                                <div class="card-header d-flex justify-content-between border-0">
+                                    <h5 class="card-title">Extra Curricular Activities</h5>
+                                    <button class="btn btn-primary-soft btn-sm" id="id-add-extra-curricular"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                            onclick="extraCurricularFormOpen()">
+                                        <i class="fa fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <!-- Card header END -->
+                                <!-- Card body START -->
+                                {% for extra in extra_curricular %}
+                                    <div class="card-body position-relative pt-0">
+                                        <!-- Experience item START -->
+                                        <div class="d-flex">
+                                            <!-- Avatar -->
+                                            <div class="avatar me-3">
+                                                <a href="#">
+                                                    <img class="avatar-img rounded-circle"
+                                                         src="{% static 'images/extra_curricular.png' %}"
+                                                         alt="">
+                                                </a>
+                                            </div>
+                                            <!-- Info -->
+                                            <div>
+                                                <h6 class="card-title mb-0">
+                                                    {{ extra.topic }}
+                                                </h6>
+                                                <p class="small">
+                                                    {{ extra.perform_time }}
+                                                    <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- Experience item END -->
+                                    </div>
+                                {% endfor %}
+                                <!-- Card body END -->
+                            </div>
+                        </div>
+                        <!-- Card END -->
+
+                        <!-- Card START -->
+                        <div class="col-md-6 col-lg-12 mb-5">
+                            <div class="card">
+                                <!-- Card header START -->
+                                <div class="card-header d-flex justify-content-between border-0">
+                                    <h5 class="card-title">Co-Curricular Activities</h5>
+                                    <button class="btn btn-primary-soft btn-sm" id="id-add-co-curricular"
+                                            data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                            onclick="coCurricularFormOpen()">
+                                        <i class="fa fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <!-- Card header END -->
+                                <!-- Card body START -->
+                                {% for coc in co_curricular %}
+                                    <div class="card-body position-relative pt-0">
+                                        <!-- Experience item START -->
+                                        <div class="d-flex">
+                                            <!-- Avatar -->
+                                            <div class="avatar me-3">
+                                                <img class="avatar-img rounded-circle"
+                                                     src="{% static 'images/co-curriculum.png' %}" alt="">
+                                            </div>
+                                            <!-- Info -->
+                                            <div>
+                                                <h6 class="card-title mb-0">
+                                                    {{ coc.topic }}
+                                                </h6>
+                                                <p class="small">
+                                                    {{ coc.perform_time }}
+                                                    <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- Experience item END -->
+                                    </div>
+                                {% endfor %}
+                                <!-- Card body END -->
+                            </div>
+                        </div>
+                        <!-- Card END -->
+
+                        <!-- Card START -->
+                        {#                        <div class="col-md-6 col-lg-12">#}
+                        {#                            <div class="card">#}
+                        {#                                <!-- Card header START -->#}
+                        {#                                <div class="card-header d-sm-flex justify-content-between align-items-center border-0">#}
+                        {#                                    <h5 class="card-title">Contacts#}
+                        {#                                        <span class="badge bg-danger bg-opacity-10 text-danger">#}
+                        {#                                        {{ totalConnections.count }}#}
+                        {#                                        </span>#}
+                        {#                                    </h5>#}
+                        {#                                    <a class="btn btn-primary-soft btn-sm"> See all contacts</a>#}
+                        {#                                </div>#}
+                        {#                                <!-- Card header END -->#}
+                        {#                                <!-- Card body START -->#}
+                        {#                                <div class="card-body position-relative pt-0">#}
+                        {#                                    <div class="row g-3">#}
+                        {##}
+                        {#                                        <div class="col-6">#}
+                        {#                                            <!-- Friends item START -->#}
+                        {#                                            <div class="card shadow-none text-center h-100">#}
+                        {#                                                <!-- Card body -->#}
+                        {#                                                <div class="card-body p-2 pb-0">#}
+                        {#                                                    <div class="avatar avatar-story avatar-xl">#}
+                        {#                                                        <a href="#!"><img class="avatar-img rounded-circle"#}
+                        {#                                                                          src="assets/images/avatar/02.jpg" alt=""></a>#}
+                        {#                                                    </div>#}
+                        {#                                                    <h6 class="card-title mb-1 mt-3"><a href="#!"> Amanda Reed </a></h6>#}
+                        {#                                                    <p class="mb-0 small lh-sm">16 mutual connections</p>#}
+                        {#                                                </div>#}
+                        {#                                                <!-- Card footer -->#}
+                        {#                                                <div class="card-footer p-2 border-0">#}
+                        {#                                                    <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip"#}
+                        {#                                                            data-bs-placement="top" title="Send message"><i#}
+                        {#                                                            class="bi bi-chat-left-text"></i></button>#}
+                        {#                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip"#}
+                        {#                                                            data-bs-placement="top" title="Remove friend"><i#}
+                        {#                                                            class="bi bi-person-x"></i></button>#}
+                        {#                                                </div>#}
+                        {#                                            </div>#}
+                        {#                                            <!-- Friends item END -->#}
+                        {#                                        </div>#}
+                        {##}
+                        {#                                        <div class="col-6">#}
+                        {#                                            <!-- Friends item START -->#}
+                        {#                                            <div class="card shadow-none text-center h-100">#}
+                        {#                                                <!-- Card body -->#}
+                        {#                                                <div class="card-body p-2 pb-0">#}
+                        {#                                                    <div class="avatar avatar-xl">#}
+                        {#                                                        <a href="#!"><img class="avatar-img rounded-circle"#}
+                        {#                                                                          src="assets/images/avatar/03.jpg" alt=""></a>#}
+                        {#                                                    </div>#}
+                        {#                                                    <h6 class="card-title mb-1 mt-3"><a href="#!"> Samuel Bishop </a>#}
+                        {#                                                    </h6>#}
+                        {#                                                    <p class="mb-0 small lh-sm">22 mutual connections</p>#}
+                        {#                                                </div>#}
+                        {#                                                <!-- Card footer -->#}
+                        {#                                                <div class="card-footer p-2 border-0">#}
+                        {#                                                    <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip"#}
+                        {#                                                            data-bs-placement="top" title="Send message"><i#}
+                        {#                                                            class="bi bi-chat-left-text"></i></button>#}
+                        {#                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip"#}
+                        {#                                                            data-bs-placement="top" title="Remove friend"><i#}
+                        {#                                                            class="bi bi-person-x"></i></button>#}
+                        {#                                                </div>#}
+                        {#                                            </div>#}
+                        {#                                            <!-- Friends item END -->#}
+                        {#                                        </div>#}
+                        {#                                        <div class="col-6">#}
+                        {#                                            <!-- Friends item START -->#}
+                        {#                                            <div class="card shadow-none text-center h-100">#}
+                        {#                                                <!-- Card body -->#}
+                        {#                                                <div class="card-body p-2 pb-0">#}
+                        {#                                                    <div class="avatar avatar-xl">#}
+                        {#                                                        <a href="#!"><img class="avatar-img rounded-circle"#}
+                        {#                                                                          src="assets/images/avatar/04.jpg" alt=""></a>#}
+                        {#                                                    </div>#}
+                        {#                                                    <h6 class="card-title mb-1 mt-3"><a href="#"> Bryan Knight </a></h6>#}
+                        {#                                                    <p class="mb-0 small lh-sm">1 mutual connection</p>#}
+                        {#                                                </div>#}
+                        {#                                                <!-- Card footer -->#}
+                        {#                                                <div class="card-footer p-2 border-0">#}
+                        {#                                                    <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip"#}
+                        {#                                                            data-bs-placement="top" title="Send message"><i#}
+                        {#                                                            class="bi bi-chat-left-text"></i></button>#}
+                        {#                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip"#}
+                        {#                                                            data-bs-placement="top" title="Remove friend"><i#}
+                        {#                                                            class="bi bi-person-x"></i></button>#}
+                        {#                                                </div>#}
+                        {#                                            </div>#}
+                        {#                                            <!-- Friends item END -->#}
+                        {#                                        </div>#}
+                        {#                                        <div class="col-6">#}
+                        {#                                            <!-- Friends item START -->#}
+                        {#                                            <div class="card shadow-none text-center h-100">#}
+                        {#                                                <!-- Card body -->#}
+                        {#                                                <div class="card-body p-2 pb-0">#}
+                        {#                                                    <div class="avatar avatar-xl">#}
+                        {#                                                        <a href="#!"><img class="avatar-img rounded-circle"#}
+                        {#                                                                          src="assets/images/avatar/05.jpg" alt=""></a>#}
+                        {#                                                    </div>#}
+                        {#                                                    <h6 class="card-title mb-1 mt-3"><a href="#!"> Amanda Reed </a></h6>#}
+                        {#                                                    <p class="mb-0 small lh-sm">15 mutual connections</p>#}
+                        {#                                                </div>#}
+                        {#                                                <!-- Card footer -->#}
+                        {#                                                <div class="card-footer p-2 border-0">#}
+                        {#                                                    <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip"#}
+                        {#                                                            data-bs-placement="top" title="Send message"><i#}
+                        {#                                                            class="bi bi-chat-left-text"></i></button>#}
+                        {#                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip"#}
+                        {#                                                            data-bs-placement="top" title="Remove friend"><i#}
+                        {#                                                            class="bi bi-person-x"></i></button>#}
+                        {#                                                </div>#}
+                        {#                                            </div>#}
+                        {#                                            <!-- Friends item END -->#}
+                        {#                                        </div>#}
+                        {##}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                                <!-- Card body END -->#}
+                        {#                            </div>#}
+                        {#                        </div>#}
+                        <!-- Card END -->
+                    </div>
+                </div>
+                <!-- Right sidebar END -->
+            </div> <!-- Row END -->
+        </div>
+        <!-- Container END -->
+
+    </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" id="id-education-form" action="{% url 'App_auth:add-new-education' %}"
+                      style="display: none;">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <fieldset class="form-group">
+                            <legend style="text-align: center;">Add Education</legend>
+                            {{ add_educations_form|crispy }}
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+                <form method="post" id="id-experience-form" action="{% url 'App_auth:add-new-experience' %}"
+                      style="display: none;">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <fieldset class="form-group">
+                            <legend style="text-align: center;">Add Experience</legend>
+                            {{ add_experiences_form|crispy }}
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+                <form method="post" id="id-skill-form" action="{% url 'App_auth:add-new-skill' %}"
+                      style="display: none;">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <fieldset class="form-group" id="id-skill-form">
+                            <legend style="text-align: center;">Add Skill</legend>
+                            {{ add_skills_form|crispy }}
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+                <form method="post" id="id-extra-curricular-form" action="{% url 'App_auth:add-new-extra-curriculum' %}"
+                      style="display: none;">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <fieldset class="form-group" id="id-extra-curricular-form">
+                            <legend style="text-align: center;">Add Extra Curricular Activity</legend>
+                            {{ add_extra_curriculars_form|crispy }}
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+                <form method="post" id="id-co-curricular-form" action="{% url 'App_auth:add-new-co-curriculum' %}"
+                      style="display: none;">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <fieldset class="form-group" id="id-co-curricular-form">
+                            <legend style="text-align: center;">Add Co-Curricular Activity</legend>
+                            {{ add_co_curriculars_form|crispy }}
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- **************** MAIN CONTENT END **************** -->
+    <script>
+        let educForm = document.getElementById('id-education-form');
+        let expForm = document.getElementById('id-experience-form');
+        let skillForm = document.getElementById('id-skill-form');
+        let extraForm = document.getElementById('id-extra-curricular-form');
+        let coForm = document.getElementById('id-co-curricular-form');
+
+        const educationFormOpen = () => {
+            educForm.style.display = 'block';
+            expForm.style.display = 'none';
+            skillForm.style.display = 'none';
+            extraForm.style.display = 'none';
+            coForm.style.display = 'none';
+        }
+
+
+        const experienceFormOpen = () => {
+            educForm.style.display = 'none';
+            expForm.style.display = 'block';
+            skillForm.style.display = 'none';
+            extraForm.style.display = 'none';
+            coForm.style.display = 'none';
+        }
+
+        const skillFormOpen = () => {
+            educForm.style.display = 'none';
+            expForm.style.display = 'none';
+            skillForm.style.display = 'block';
+            extraForm.style.display = 'none';
+            coForm.style.display = 'none';
+        }
+
+        const extraCurricularFormOpen = () => {
+            educForm.style.display = 'none';
+            expForm.style.display = 'none';
+            skillForm.style.display = 'none';
+            extraForm.style.display = 'block';
+            coForm.style.display = 'none';
+        }
+
+        const coCurricularFormOpen = () => {
+            educForm.style.display = 'none';
+            expForm.style.display = 'none';
+            skillForm.style.display = 'none';
+            extraForm.style.display = 'none';
+            coForm.style.display = 'block';
+        }
+    </script>
+{% endblock %}

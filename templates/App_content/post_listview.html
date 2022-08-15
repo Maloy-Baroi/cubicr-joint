@@ -1,0 +1,380 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Title</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            background-image: url("{% static 'bg_dark.jpg' %}");
+        }
+
+        .container-fluid {
+            padding: 2rem;
+        }
+
+        .card {
+            color: #666b7a;
+            font-weight: 600;
+            border-width: 8px;
+            border-color: #444857;
+            background-color: #1d1e22;
+        }
+
+        .card-body {
+            padding: 1rem 2rem;
+        }
+
+        .input-daterange > input {
+            cursor: pointer;
+            border-radius: 3px !important;
+            text-align: inherit;
+        }
+
+        .form-radio {
+            padding-top: 6px;
+        }
+
+        .radio-inline {
+            font-weight: 500;
+        }
+
+        .form-check-input {
+            width: 25px;
+            height: 25px;
+            margin: 0px 6px 2px;
+            vertical-align: middle;
+        }
+
+        .input-group-text {
+            border-right: 0px;
+            background-color: #ffffff;
+            border-radius: 0.25rem 0 0 0.25rem;
+        }
+
+        .input-username > .form-control {
+            border-left: 0px;
+            border-radius: 0 0.25rem 0.25rem 0;
+        }
+
+
+        @media (max-width: 767px) {
+            .img-title {
+                display: block;
+            }
+        }
+
+
+    </style>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(0deg, #000000, #262626);
+            border-radius: 50%;
+        }
+
+        .glow::before,
+        .glow::after {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background: linear-gradient(
+                    45deg,
+                    #ff00ee,
+                    #0000ff,
+                    #00ff00,
+                    #ff0000,
+                    #ff00ee,
+                    #0000ff,
+                    #00ff00,
+                    #ffff00,
+                    #ff0000
+            );
+            background-size: 400%;
+            max-width: calc(300px + 4px);
+            max-height: calc(300px + 4px);
+            width: calc(300px + 4px);
+            height: calc(300px + 4px);
+            z-index: -1;
+            animation: animate 20s linear infinite;
+            border-radius: 50%;
+        }
+
+        .disable-animation::before,
+        .disable-animation::after {
+            animation-play-state: paused;
+        }
+
+        .glow::after {
+            filter: blur(28px);
+        }
+
+        #player,
+        #playlist {
+            width: 243px;
+            height: 212px;
+            text-align: center;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #songName {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 30px;
+        }
+
+        .playlist-btn {
+            width: 243px;
+            margin-top: 30px;
+            text-align: center;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .hide {
+            display: none;
+        }
+
+        #list {
+            height: 118px;
+            max-height: 118px;
+            margin-top: 16px;
+            font-size: 12px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            color: #fff;
+            text-align: left;
+            padding-left: 8px;
+            border: 2px solid #262626;
+            border-radius: 5px;
+        }
+
+        .list-item {
+            line-height: 30px;
+            height: 30px;
+            margin-top: 4px;
+        }
+
+        .list-container button {
+            width: 30px;
+            padding: 0;
+            float: right;
+            margin-right: 4px;
+        }
+
+        .add-list {
+            padding: 4px 6px;
+        }
+
+        .wrap-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 190px;
+            display: inline-block;
+        }
+
+        #sourceUrl {
+            background: none;
+            padding: 8px;
+            border: 2px solid #1f1f1f;
+            border-radius: 47px;
+            outline: none;
+            color: white;
+            height: 30px;
+            width: 192px;
+        }
+
+        #sourceUrl:active,
+        #sourceUrl:focus {
+            border: 2px solid #0088ff;
+        }
+
+        .text {
+            color: #ffffff;
+            display: block;
+        }
+
+        button {
+            background: #000000;
+            color: #ffffff;
+            background: linear-gradient(0deg, #000000, #262626);
+            font-size: 14px;
+            border: none;
+            outline: none;
+            padding: 0px 15px;
+            width: 55px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 32px;
+        }
+
+        button:hover {
+            box-shadow: 0 0 8px 0px #ffffff61;
+        }
+
+        button:active {
+            box-shadow: inset 0 0 6px 0px #ffffff61;
+        }
+
+        #seek,
+        #volume {
+            -webkit-appearance: none;
+            border: 1px solid #000000;
+            height: 5px;
+            vertical-align: middle;
+            border-radius: 20px;
+            background-color: #232323;
+            outline: none;
+        }
+
+        #seek::-webkit-slider-thumb,
+        #volume::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #000000;
+            border-radius: 10px;
+            background: #ffffff;
+        }
+
+        #seek {
+            display: block;
+            width: 230px;
+        }
+
+        .scrollbar::-webkit-scrollbar {
+            max-width: 5px;
+            max-height: 5px;
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background: #333;
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb:hover {
+            box-shadow: inset 0 0 1px 1px #5c6670;
+        }
+
+        .scrollbar::-webkit-scrollbar-track:hover {
+            border: 1px solid #000000;
+            border-radius: 20px;
+            background-color: #232323;
+        }
+
+        @keyframes animate {
+            0% {
+                background-position: 0 0;
+            }
+            50% {
+                background-position: 400% 0;
+            }
+            100% {
+                background-position: 0 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-center">Post Gallery<span><a href="{% url 'home' %}"
+                                                                    style="float: right; text-decoration: none; color: #666B7AFF">✖</a></span>
+            </h4>
+            {% if post_list %}
+                {% for post in post_list %}
+                    <hr>
+                    <div class="row">
+                        <div class="form-group col-lg-2 col-md-6 col-sm-12">
+                            <small>{{ post.author.first_name }} {{ post.author.last_name }}</small><br>
+                            <small>{{ post.author.email }}</small><br>
+                            <hr>
+                            <small>{{ post.created_on }}</small>
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                            <small>{{ post.my_text }}</small>
+                        </div>
+                        <div class="form-group col-lg-5 col-md-6 col-sm-12">
+                            <div class="row">
+                                {% if post.post_image1 %}
+                                    <div class="col-lg-4">
+                                        <img src="{{ post.post_image1.url }}" alt="" height="150px"
+                                             width="100%">
+                                    </div>
+                                {% endif %}
+                                {% if post.post_image2 %}
+                                    <div class="col-lg-4">
+                                        <img src="{{ post.post_image2.url }}" alt="" height="150px"
+                                             width="100%">
+                                    </div>
+                                {% endif %}
+                                {% if post.post_image3 %}
+                                    <div class="col-lg-4">
+                                        <img src="{{ post.post_image3.url }}" alt="" height="150px"
+                                             width="100%">
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-1 col-md-6 col-sm-12">
+                            <a href="{% url 'App_content:post-react' pk=post.id %}">
+                                {% if post.liked_post.liked %}
+                                    <i class="fa fa-heart"
+                                       style="float: right; color: #ff0000; font-size: 30px; margin-top: 70%"></i>
+                                {% else %}
+                                    <i class="fa fa-heart-o" aria-hidden="true"
+                                       style="float: right; color: #b2acac; font-size: 30px; margin-top: 70%"></i>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+</body>
+</html>

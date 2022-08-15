@@ -1,0 +1,115 @@
+{% extends 'Navbar.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% block main %}
+    <style>
+        .full-container {
+            margin-top: 150px !important;
+            background-color: white;
+            padding-top: 20px;
+            font-family: "Nunito Sans", sans-serif;
+        }
+
+        .add-btn-container {
+            margin-top: 100px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.4em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25rem;
+            -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+            -o-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+        }
+
+        .badge-primary {
+            color: white;
+            background-color: #1644ba !important;
+        }
+
+        .jb-title a {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #1644BA;
+        }
+
+        .jb-category {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .jb-category b {
+            color: #0a0c0e;
+        }
+
+        .jb-location {
+            font-size: 1.2rem;
+            margin-bottom: 0;
+            text-align: left;
+            font-weight: lighter;
+        }
+
+    </style>
+    <div class="container add-btn-container">
+        <div class="mb-1">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSyllabusModel">
+                Add new syllabus
+            </button>
+        </div>
+    </div>
+    <div class="container pt-3 bg-white mt-5">
+        {% for syllabus in syllabuses %}
+            <div class="mb-5">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img src="{% static 'images/syllabus.png' %}" alt="Job logo" width="65" height="65">
+                    </div>
+                    <div class="col-md-6">
+                        <p class="badge badge-primary">{{ syllabus.department }}</p>
+                        <h2 class="jb-title">
+                            <a href="{{ syllabus.syllabus.url }}" download="pdf">Syllabus</a>
+                        </h2>
+                        <p class="jb-category">
+                            <span>University </span>
+                            <b>{{ syllabus.university }}</b>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <h3 class="jb-location">Session: {{ syllabus.session }}</h3>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addSyllabusModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="{% url 'App_content:add-syllabus' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Syllabus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ syllabusForm|crispy }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

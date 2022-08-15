@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>cubicR | Home</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+</head>
+<body>
+<script>
+    let authenticationStatus = "{{ userAuth|safe }}";
+    let userProfileExist = "{{ userProfileExist|safe }}"
+    let timer = 1000;
+    setInterval(function () {
+        if (authenticationStatus === 'true') {
+            if (userProfileExist === 'true') {
+                document.getElementById('landing-page-div').style.display = 'block';
+                document.getElementById('login-view').style.display = 'none';
+            }
+            else {
+                window.location.reload()
+            }
+        } else {
+            document.getElementById('landing-page-div').style.display = 'none';
+            document.getElementById('login-view').style.display = 'block';
+        }
+    }, timer * 1.5);
+</script>
+<div id="landing-page-div" style="display: none;">
+    {% include 'Basement/landing_page.html' %}
+</div>
+<div id="login-view" style="display: none;">
+    {% include 'App_auth/login_view.html' %}
+</div>
+</body>
+</html>

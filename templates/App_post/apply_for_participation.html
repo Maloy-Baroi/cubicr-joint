@@ -1,0 +1,196 @@
+{% extends 'Navbar.html' %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% block main %}
+
+    <style>
+        .card-body .h2, p {
+            background-color: white;
+        }
+
+        .card-form {
+            background-color: white;
+        }
+
+        img.rounded {
+            width: 100%;
+            height: 390px;
+        }
+
+        table {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        table caption {
+            font-size: 1.5em;
+            margin: .5em 0 .75em;
+        }
+
+        table tr {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: .35em;
+        }
+
+        table th,
+        table td {
+            padding: .625em;
+            text-align: center;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        table th {
+            font-size: .85em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            background-color: #0cbc87;
+            color: white;
+        }
+
+        @media screen and (max-width: 600px) {
+            table {
+                border: 0;
+            }
+
+            table caption {
+                font-size: 1.3em;
+            }
+
+            table thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+
+            table tr {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+
+            table td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+            }
+
+            table td::before {
+                /*
+                * aria-label has no advantage, it won't be read inside a table
+                content: attr(aria-label);
+                */
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            table td:last-child {
+                border-bottom: 0;
+            }
+        }
+    </style>
+
+    <!-- Container START -->
+    <div class="container mt-5 mb-5">
+        <div class="row g-4 mt-5">
+            <!-- Main content START -->
+            <div class="col-lg-8 mx-auto">
+                <div class="vstack gap-4">
+                    <!-- Blog single START -->
+                    <div class="card card-body">
+                        <img class="rounded" src="{{ project.author.user_main_profile.profile_picture.url }}"
+                             alt="Author Image">
+                        <small class="mt-2 mb-2">Author</small>
+                        <h1 class="mt-2 mb-2 h2">
+                            {{ project.title }}
+                        </h1>
+                        <p>
+                            {{ project.description|safe }}
+                        </p>
+                    </div>
+                    <!-- Card END -->
+                    <!-- Comments START -->
+                    <div class="card">
+
+                        {% if project.author == request.user %}
+                            <div class="card-header pb-0 border-0">
+                                <h4 class="bg-white text-center">Responses</h4>
+                            </div>
+                        {% else %}
+                            <div class="card-header pb-0 border-0">
+                                <h4 class="bg-white">Apply For Participation</h4>
+                            </div>
+                            <div class="card-body card-form">
+                                <form enctype="multipart/form-data" method="post">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="form-group col-lg-12 col-md-12 col-sm-12 bg-white">
+                                            <label for="reason" class="bg-white">Reason Of Participation</label>
+                                            <textarea type="text" class="form-control bg-white" id="reason"
+                                                      name="reason"
+                                                      placeholder="reason"
+                                                      rows="4"></textarea>
+                                        </div>
+                                    </div>
+                                    <hr class="m-0 bg-white p-2">
+                                    <button class="w-100 btn btn-secondary btn-lg" type="submit">Submit</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Blog single END -->
+                </div>
+            </div>
+            <!-- Main content END -->
+        </div> <!-- Row END -->
+    </div>
+
+    {% if project.author == request.user %}
+        <div class="container">
+            <table>
+                <caption>
+
+                </caption>
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Reason</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for application in applications %}
+                    <tr>
+                        <td scope="row" data-label="Name">
+                            <a href="#" target="_blank">
+                                {{ application.participant.user_main_profile.fullName }}
+                            </a>
+                        </td>
+                        <td data-label="Reason">
+                            {{ application.reason_of_participation|safe }}
+                        </td>
+                        <td data-label="Action">
+                            <button class="btn btn-success btn-sm"
+                                    onclick="window.location.href='{% url "App_post:accept-apply-for-research-participation" user_id=application.participant.id pnr_apply_id=application.id %}'">
+                                Add
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

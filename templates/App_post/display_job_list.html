@@ -1,0 +1,84 @@
+{% extends 'Basement/base.html' %}
+{% load static %}
+{% block main %}
+    <style>
+        .full-container {
+            margin-top: 150px !important;
+            background-color: white;
+            padding-top: 20px;
+            font-family: "Nunito Sans", sans-serif;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.4em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25rem;
+            -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+            -o-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+        }
+
+        .badge-primary {
+            color: white;
+            background-color: #1644ba !important;
+        }
+
+        .jb-title a {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #1644BA;
+        }
+
+        .jb-category {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .jb-category b {
+            color: #0a0c0e;
+        }
+
+        .jb-location {
+            font-size: 1.2rem;
+            margin-bottom: 0;
+            text-align: left;
+            font-weight: lighter;
+        }
+
+    </style>
+    <div class="container pt-3 full-container">
+        {% for job in jobs %}
+            <div class="mb-5">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img src="{% static 'images/featured-listing-1.jpg' %}" alt="Job logo">
+                    </div>
+                    <div class="col-md-4">
+                        <p class="badge badge-primary">{{ job.work_type }}</p>
+                        <h2 class="jb-title">
+                            <a href="{% url 'App_post:single-job-post' pk=job.id %}">{{ job.job_title }}</a>
+                        </h2>
+                        <p class="jb-category">
+                            <span>Category: </span>
+                            <b>{{ job.category }}</b>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <h3 class="jb-location">{{ job.location }}</h3>
+                    </div>
+                    <div class="col-md-2">
+                        <p>Salary: Negotiable</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

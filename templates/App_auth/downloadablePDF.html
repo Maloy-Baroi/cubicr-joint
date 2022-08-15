@@ -1,0 +1,201 @@
+{% load crispy_forms_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>CV</title>
+    <style>
+        * {
+            font-family: 'Times New Roman', serif;
+            color: black;
+        }
+
+        .all-row {
+            display: flex;
+            padding-left: 20px;
+        }
+
+        #name {
+            font-size: 21px;
+        }
+
+        .sub-heads {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+            margin-bottom: 2px;
+        }
+
+        .inner-text {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 10pt;
+            margin-bottom: 2px;
+        }
+
+    </style>
+</head>
+<body onload="modalOpenerFunction()">
+<div id="cv-container">
+    <div class="container mt-5">
+        <div class="row all-row" style="display: flex">
+            <div class="col-md-9 col-sm-6">
+                <h4 id="name">{{ profile.fullName }}</h4>
+                <h6 style="margin-bottom: 0;"
+                    class="inner-text">{{ profile.house_no }}, {{ profile.area }}, {{ profile.city }},
+                    Bangladesh</h6>
+                <a href="" class="inner-text">{{ profile.user }}</a>
+                <p class="inner-text">Tel.: {{ profile.phone_number }}</p>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <img src="{{ profile.profile_picture.path }}" alt="{{ profile.fullName }}" height="100">
+            </div>
+        </div>
+        <div class="row all-row">
+            <p class="sub-heads">CAREER OBJECTIVE</p>
+            <hr class="inner-text" style="border: 1px solid black; color: black">
+            <p class="inner-text" style="margin-top: 0; margin-bottom: 6px;">
+                {{ profile.career_objective }}
+            </p>
+            <p></p>
+        </div>
+        <div class="row all-row">
+            <p class="sub-heads">PERSONAL DETAILS</p>
+            <hr style="border: 1px solid black; color: black">
+            <div style="margin-top: -15px;">
+                <span class="inner-text">Date of birth:
+                    {{ profile.Date_of_Birth.day }}/{{ profile.Date_of_Birth.month }}/{{ profile.Date_of_Birth.year }}
+                </span> <br>
+                <span class="inner-text">
+                    Nationality: Bangladeshi
+                </span>
+                <p></p>
+            </div>
+        </div>
+        <div class="row all-row">
+            <p class="sub-heads">EXPERIENCE</p>
+            <hr style="border: 1px solid black; color: black">
+            {% for experience in experiences %}
+                <div style="margin-top: -15px;">
+                    <b class="inner-text">
+                        {{ experience.position }}
+                    </b> <br>
+                    <div class="row">
+                        <div class="col-md-4 ">
+                            <p class="inner-text">{{ experience.starting_year }} - {{ experience.leaving_year }}</p>
+                        </div>
+                        <div class="col-md-4 ">
+                            <p class="inner-text">{{ experience.Company }}</p>
+                        </div>
+                        <div class="col-md-4 ">
+                            <p class="inner-text">
+                                {{ experience.location }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <article class="inner-text">{{ experience.description }}</article>
+                    </div>
+                </div>
+            {% endfor %}
+            <p></p>
+        </div>
+        <div class="row all-row">
+            <p class="sub-heads">SELECTED CO-CURRICULA ACTIVITIES AND EXTRA CURRICULA</p>
+            <hr style="border: 1px solid black; color: black">
+            <div style="margin-top: -15px;">
+                {% for coc in co_curricular %}
+                    <ul>
+                        <li CLASS="inner-text">{{ coc.topic }} - {{ coc.perform_time }}</li>
+                    </ul>
+                {% endfor %}
+                {% for extra in extra_curricular %}
+                    <ul>
+                        <li CLASS="inner-text">{{ extra.topic }} - {{ extra.perform_time }}</li>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row all-row">
+            <p class="sub-heads">PROFESSIONAL SKILL </p>
+            <hr style="border: 1px solid black; color: black">
+            <div style="margin-top: -15px;">
+                {% for skill in skills %}
+                    <ul>
+                        <li CLASS="inner-text">{{ skill.category }}: {{ skill.title }}</li>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row all-row">
+            <p class="sub-heads">ACHIEVEMENTS </p>
+            <hr style="border: 1px solid black; color: black">
+            <div style="margin-top: -15px;">
+                {% for achievment in achievements %}
+                    <ul>
+                        <li CLASS="inner-text">{{ achievment.topic }}: {{ achievement.perform_time }}</li>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row all-row">
+            <p class="sub-heads">EDUCATION </p>
+            <hr style="border: 1px solid black; color: black">
+            <div style="margin-top: -15px;">
+                {% for educ in educations %}
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p class="inner-text">
+                                {{ educ.starting_year.year }} - {{ educ.passing_year.year }}
+                            </p>
+                        </div>
+                        <div class="col-md-5">
+                            <p class="inner-text">{{ educ.level_of_education }}</p>
+                        </div>
+                        <div class="col-md-5">
+                            <span class="inner-text">{{ educ.institution }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-5">
+                            <p>Major {{ educ.major_subjects }}<br>Minor {{ educ.minor_subjects }} <br>{{ educ.CGPA }}
+                            </p>
+                        </div>
+                        <div class="col-md-5"></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row all-row">
+            <p class="sub-heads">References </p>
+            <hr style="border: 1px solid black; color: black">
+        <div class="row">
+            {% for reference in references %}
+                <div class="col-md-6" style="margin-top: -15px;">
+                <b>{{ reference.name_of_reference }}</b> <br>
+                <span>{{ reference.position }}</span> <br>
+                <span>{{ reference.contact }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        </div>
+    </div>
+</div>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+</html>

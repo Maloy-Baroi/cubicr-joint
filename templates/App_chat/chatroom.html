@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"></script>
+    <style>
+        body {
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .container {
+            border: 2px solid #dedede;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        #display {
+            height: 427px;
+            overflow: scroll;
+        }
+
+        @media only screen and (max-width: 720px) {
+            #display {
+                height: 300px;
+                overflow: scroll;
+            }
+        }
+
+        .darker {
+            border-color: #ccc;
+            background-color: #ddd;
+        }
+
+        .container::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .container img {
+            float: left;
+            max-width: 60px;
+            width: 100%;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+
+        .container img.right {
+            float: right;
+            margin-left: 20px;
+            margin-right: 0;
+        }
+
+        .time-right {
+            float: right;
+            color: #aaa;
+        }
+
+        .time-left {
+            float: left;
+            color: #999;
+        }
+
+        .my-chats {
+            text-align: right !important;
+        }
+
+        .my-chats b, p {
+            background-color: deeppink;
+            color: #ffffff;
+        }
+
+        .friend-chats {
+            text-align: left !important;
+        }
+
+        .friend-chats b, p {
+            background-color: deeppink;
+            color: #ffffff;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <title>Chat Room</title>
+</head>
+<body>
+<div>
+    <h1>{{ room.name }}</h1>
+</div>
+<div id="displayChats">
+
+</div>
+<script>
+    let you = `{{ request.user.username }}`;
+    $(document).ready(function () {
+        setInterval(function () {
+            $.ajax({
+                type: 'GET',
+                url: "/chat/getMessages/{{ room.name }}/",
+                success: function (response) {
+                    $('#displayChats').empty();
+                    for (let i in response.messages) {
+                        console.log(response.messages[i]);
+                        let newDiv;
+                        if (you === response.messages[i].username) {
+                            newDiv = "<div class='container my-chats'><b>" + response.messages[i].username + "</b><p>" + response.messages[i].value + "</p>";
+                        } else {
+                            newDiv = "<div class='container friend-chats'><b>" + response.messages[i].username + "</b><p>" + response.messages[i].value + "</p>";
+                        }
+                        $('#displayChats').append(newDiv);
+                    }
+                },
+                error: function (err) {
+                    console.log("-------------Error------------");
+                }
+            });
+        }, 2000);
+    })
+</script>
+
+<div class="container">
+    <style>
+        input[type=text], select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        div {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .btn {
+            background-color: green;
+            border-radius: 5px;
+            color: #fff !important;
+            border: 1px solid green;
+            padding: 10px;
+        }
+    </style>
+    <form id="message-post-form">
+        {% csrf_token %}
+        <input type="hidden" name="username" id="username" value="{{ request.user.username }}">
+        <input type="hidden" name="room_id" id="room_id" value="{{ room.name }}">
+        <input type="text" name="message" id="message" width="100px">
+        <button class="btn btn-primary" type="submit">Send</button>
+    </form>
+    <script type="text/javascript">
+        $(document).on('submit', "#message-post-form", function (e) {
+            e.preventDefault()
+            $.ajax({
+                type: 'POST',
+                url: '/chat/send-message/',
+                data: {
+                    username: $('#username').val(),
+                    room_id: $('#room_id').val(),
+                    message: $('#message').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: function (data) {
+                },
+            });
+            document.getElementById('message').value = '';
+        })
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,180 @@
+{% extends 'Navbar.html' %}
+{% block title %}
+    Podcast
+{% endblock %}
+{% block main %}
+
+    <style>
+        .podcast-container {
+            margin-top: 100px;
+        }
+
+        .podcast-category-header {
+            line-height: 1em;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            margin-block: 0px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: var(--font-family, CircularSpTitle, CircularSpTitle-Tall, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, var(--fallback-fonts, sans-serif));
+            color: #0b0b0c;
+        }
+
+        .LunqxlFIupJw_Dkx6mNx {
+            --card-container-border-radius: clamp(4px, (var(--column-width, 0px) - 32px) * 0.025, 8px);
+            -webkit-box-flex: 1;
+            background: #181818;
+            border-radius: calc(var(--card-container-border-radius) + 2px);
+            -ms-flex: 1;
+            flex: 1;
+            isolation: isolate;
+            padding: 16px;
+            position: relative;
+            -webkit-transition: background-color .3s ease;
+            transition: background-color .3s ease;
+            width: 100%;
+        }
+
+        .XiVwj5uoqqSFpS4cYOC6 {
+            height: 100%;
+        }
+
+        .xBV4XgMq0gC5lQICFWY_ {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .E1N1ByPFWo4AJLHovIBQ {
+            min-height: 62px;
+        }
+
+        .tsv7E_RBBw6v0XTQlcRo {
+            bottom: 0;
+            content: "";
+            cursor: pointer;
+            left: 0;
+            overflow: hidden;
+            right: 0;
+            text-indent: 100%;
+            top: 0;
+            white-space: nowrap;
+            z-index: 0;
+        }
+
+        .SKJSok3LfyedjZjujmFt, .g4PZpjkqEh5g7xDpCr2K {
+            --card-image-border-radius: clamp(4px, (var(--column-width, 0px) - 32px) * 0.025, 8px);
+            border-radius: var(--card-image-border-radius);
+            width: 100%;
+        }
+
+        .g4PZpjkqEh5g7xDpCr2K {
+            background-color: #333;
+            -webkit-box-shadow: 0 8px 24px rgb(0 0 0 / 50%);
+            box-shadow: 0 8px 24px rgb(0 0 0 / 50%);
+            padding-bottom: 100%;
+            position: relative;
+        }
+
+        .SKJSok3LfyedjZjujmFt {
+            display: block;
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+        }
+
+        .SKJSok3LfyedjZjujmFt, .g4PZpjkqEh5g7xDpCr2K {
+            --card-image-border-radius: clamp(4px, (var(--column-width, 0px) - 32px) * 0.025, 8px);
+            border-radius: var(--card-image-border-radius);
+            width: 100%;
+        }
+
+        .mMx2LUixlnN_Fu45JpFB {
+            -o-object-fit: cover;
+            object-fit: cover;
+            -o-object-position: center center;
+            object-position: center center;
+        }
+
+        .LunqxlFIupJw_Dkx6mNx a, .LunqxlFIupJw_Dkx6mNx button {
+            position: relative;
+            z-index: 1;
+        }
+
+        .Nqa6Cw3RkDMV8QnYreTr {
+            display: inline-block;
+            max-width: 100%;
+            vertical-align: middle;
+            text-decoration: none;
+        }
+
+        .kgUbfh {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            margin-block: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, sans-serif;
+            padding-block-end: 4px;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .nk6UgB4GUYNoAcPtAQaG {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .audio-play audio {
+            width: 210px !important;
+        }
+
+    </style>
+    <div class="container podcast-container">
+        {% for category, podcast in categorical_podcast %}
+            {% if podcast %}
+                <h2 class="podcast-category-header p-2">{{ category }}</h2>
+                <div class="row p-3">
+                    {% for pod in podcast %}
+                        <div class="col-md-3">
+                            <div class="LunqxlFIupJw_Dkx6mNx">
+                                <div draggable="true" class="XiVwj5uoqqSFpS4cYOC6">
+                                    <div class="xBV4XgMq0gC5lQICFWY_">
+                                        <div class="g4PZpjkqEh5g7xDpCr2K">
+                                            <div class="">
+                                                <img aria-hidden="false" draggable="false" loading="lazy"
+                                                     src="{{ pod.cover_image.url }}"
+                                                     data-testid="card-image" alt=""
+                                                     class="mMx2LUixlnN_Fu45JpFB SKJSok3LfyedjZjujmFt">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="E1N1ByPFWo4AJLHovIBQ">
+                                        <a draggable="false" title="{{ pod.title }}" class="Nqa6Cw3RkDMV8QnYreTr"
+                                           dir="auto"
+                                           href="/genre/0JQ5DAqbMKFHv2c1dK1Jdi">
+                                            <div class="Type__TypeElement-goli3j-0 kgUbfh nk6UgB4GUYNoAcPtAQaG">
+                                                {{ pod.title|truncatechars:20 }}
+                                            </div>
+                                            <div class="audio-play">
+                                                <audio controls>
+                                                    <source src="{{ pod.audio_file.url }}" type="audio/mpeg">
+                                                </audio>
+                                            </div>
+                                        </a>
+                                        <div class="Type__TypeElement-goli3j-0 eDbSCl Za_uNH8nTZ0qCuIqbPLZ">
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    <div class="tsv7E_RBBw6v0XTQlcRo" data-testid="card-click-handler"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <hr style="border: 1px dotted #0a0c0e">
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
