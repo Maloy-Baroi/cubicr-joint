@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'WePoka.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'cubicr_db',
+        'NAME': 'cubicr_database',
         'USER': 'cubicr_amin',
         'PASSWORD': '1Haveadream',
         'HOST': 'localhost',
