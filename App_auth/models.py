@@ -173,4 +173,13 @@ class Follow(models.Model):
     follower = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='follower')
     following = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='following')
     created_date = models.DateField(auto_now_add=True)
+    
+
+class SubscribersModel(models.Model):
+    subscriber = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='subscriber')
+    status = models.BooleanField(default=False)
+    created_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.subscriber.username
 
