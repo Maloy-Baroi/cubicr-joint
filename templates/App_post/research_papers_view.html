@@ -2,4 +2,60 @@
 {% load static %}
 {% load crispy_forms_filters %}
 {% block main %}
+
+    <div class='container' style="margin-top: 120px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Abstract</th>
+                        {% if subscribed %}
+                            <th>Download</th>
+                        {% else %}
+                            <th>Subscribe</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for paper in research_papers %}
+                        <tr>
+                            <td data-label="Title">{{ paper.title }}</td>
+                            <td data-label="Author">{{ paper.author }}</td>
+                            <td data-label="Abstract" title="{{ paper.preview }}">{{ paper.preview|truncatechars:100 }}</td>
+                            {% if subscribed %}
+                                <td data-label="Download"><a href="{% static paper.file %}" download>Download</a></td>
+                            {% else %}
+                                <td data-label="Subscribe">You didn't subscribe. 
+                                    <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#subscribeModal_{{ paper.id }}">Subscribe?</a>
+                                </td>                                
+                                <!-- Modal -->
+                                <div class="modal fade" id="subscribeModal_{{ paper.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel_{{ paper.id }}">
+                                            Bkash Payment QR
+                                            <br>
+                                            <p style="font-size: 12px; color: red; margin-bottom: 0;">
+                                                Reference: (Email) ( You will get confirmation within 10minutes.)
+                                            </p>
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">                                      
+                                            <img src="https://raw.githubusercontent.com/Maloy-Baroi/svgFIles/main/qrcode.png" alt="QR" width="100%">
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+            </table>
+    </div>
+
 {% endblock %}
