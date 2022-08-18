@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy
 from App_auth.models import CustomUser
 from App_chat.models import Room
 from App_post.forms import JobPostModelForm, JobApplyForm
-from App_post.models import PartnerRequestModel, JobPostModel, PartnerApplicationModel, JobApplicationModel
+from App_post.models import *
 
 
 @login_required
