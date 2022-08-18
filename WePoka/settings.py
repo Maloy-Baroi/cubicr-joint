@@ -132,8 +132,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 # STATICFILES_DIRS =['/root/templates/colorlib-regform-6']
-STATIC_ROOT = '/root/cubicr/static'
-MEDIA_ROOT = '/root/cubicr/media'
+STATIC_ROOT = '/cubicr/static'
+MEDIA_ROOT = '/cubicr/media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
