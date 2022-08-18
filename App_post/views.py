@@ -142,7 +142,11 @@ def accept_apply_for_research_participation(request, user_id, pnr_apply_id):
 
 @login_required
 def research_papers_view(request):
-    return render(request, 'App_post/research_papers_view.html')
+    research_papers = ResearchPaperModel.objects.filter(status=True)
+    content = {
+        'research_papers': research_papers,
+    }
+    return render(request, 'App_post/research_papers_view.html', context=content)
 
 
 
