@@ -163,9 +163,13 @@ def accept_connection_request(request, request_id):
 
 @login_required
 def my_network_view(request):
-    myNetworks = ConnectionModel.objects.filter(user=request.user)
+    try:
+        myNetworks = ConnectionModel.objects.filter(user=request.user)[0]
+    except:
+        myNetworks = None
+    groups = request.user.groups.all()
     groups = request.user.groups.all()
     content = {
-        'myNetworks': myNetworks[0],
+        'myNetworks': myNetworks,
     }
     return render(request, 'App_content/myNetworks.html', context=content)
