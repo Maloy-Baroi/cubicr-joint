@@ -134,7 +134,7 @@ MEDIA_URL = 'media/'
 STATICFILES_DIRS =[
     os.path.join(BASE_DIR, 'static')
 ]
-STATIC_ROOT = '/home/maloy/cubicr/static'
+# STATIC_ROOT = '/home/maloy/cubicr/static'
 MEDIA_ROOT = '/home/maloy/cubicr/media'
 
 # Default primary key field type
