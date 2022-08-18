@@ -129,9 +129,11 @@ USE_TZ = True
 
 # MEDIA_URL = 'media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-STATIC_URL = 'home/maloy/static/'
-MEDIA_URL = 'home/maloy/media/'
-# STATICFILES_DIRS =['/root/templates/colorlib-regform-6']
+STATIC_URL = 'static/'
+MEDIA_URL = 'media/'
+STATICFILES_DIRS =[
+    os.path.join(BASE_DIR, 'static')
+]
 STATIC_ROOT = '/home/maloy/cubicr/static'
 MEDIA_ROOT = '/home/maloy/cubicr/media'
 
