@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-yqw($z%g^t-8ko_kzim7#a_tb)4&3cu)y9%ba$1ylky3@b+mym
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['139.59.40.121', 'www.cubicr.click', 'cubicr.click']
+ALLOWED_HOSTS = ['139.59.40.121', 'www.cubicr.click', 'cubicr.click', '*']
 
 # Application definition
 
@@ -126,6 +126,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
