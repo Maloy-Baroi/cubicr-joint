@@ -4,6 +4,7 @@
 {% block main %}
 
     <div class='container' style="margin-top: 120px;">
+        {% if research_papers %}
             <table>
                 <thead>
                     <tr>
@@ -56,6 +57,9 @@
                         </tr>
                     {% endfor %}
             </table>
+        {% else %}
+        <h2 class="alert-warning">No Paper Published</h2>
+        {% endif %}
     </div>
 
 {% endblock %}
