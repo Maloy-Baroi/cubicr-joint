@@ -17,4 +17,5 @@ urlpatterns = [
     path('accept-apply-for-research-participation/<int:user_id>/<int:pnr_apply_id>/',
          views.accept_apply_for_research_participation,
          name='accept-apply-for-research-participation'),
+    path('research-papers/', views.research_papers_view, name='research-papers'),
 ]
