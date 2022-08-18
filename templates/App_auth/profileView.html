@@ -166,7 +166,7 @@
                             <div class="card-body">
                                 {% if post.my_text %}
                                     <p>
-                                        {{ post.my_text }}
+                                        {{ post.my_text|safe }}
                                     </p>
                                 {% else %}
                                     <audio controls>
